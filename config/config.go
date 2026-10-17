@@ -37,18 +37,23 @@ type NotificationConfig struct {
 
 // Config represents the configuration information.
 type Config struct {
-	AdminConf        AdminServer         `json:"admin_server"`
-	PhishConf        PhishServer         `json:"phish_server"`
-	DBName           string              `json:"db_name"`
-	DBPath           string              `json:"db_path"`
-	DBSSLCaPath      string              `json:"db_sslca_path"`
-	MigrationsPath   string              `json:"migrations_prefix"`
-	TestFlag         bool                `json:"test_flag"`
-	ContactAddress   string              `json:"contact_address"`
-	ChiselServerPort string              `json:"chisel_server_port"`
-	ChiselSecret     string              `json:"chisel_secret"`
-	Logging          *log.Config         `json:"logging"`
-	Notifications    *NotificationConfig `json:"notifications"`
+	AdminConf      AdminServer `json:"admin_server"`
+	PhishConf      PhishServer `json:"phish_server"`
+	DBName         string      `json:"db_name"`
+	DBPath         string      `json:"db_path"`
+	DBSSLCaPath    string      `json:"db_sslca_path"`
+	MigrationsPath string      `json:"migrations_prefix"`
+	TestFlag       bool        `json:"test_flag"`
+	ContactAddress string      `json:"contact_address"`
+	// AllowInsecureImportTLS, when true, lets the "Import Site" feature fetch
+	// targets without verifying their TLS certificate (useful for cloning
+	// staging/engagement hosts that present self-signed certs). It defaults
+	// to false, so certificates are verified unless an operator opts in.
+	AllowInsecureImportTLS bool                `json:"allow_insecure_import_tls"`
+	ChiselServerPort       string              `json:"chisel_server_port"`
+	ChiselSecret           string              `json:"chisel_secret"`
+	Logging                *log.Config         `json:"logging"`
+	Notifications          *NotificationConfig `json:"notifications"`
 }
 
 // Version contains the current gophish version

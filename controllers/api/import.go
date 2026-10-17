@@ -13,6 +13,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/jordan-wright/email"
+	"github.com/yusufarbc/vantage/config"
 	"github.com/yusufarbc/vantage/dialer"
 	log "github.com/yusufarbc/vantage/logger"
 	"github.com/yusufarbc/vantage/models"
@@ -122,14 +123,19 @@ func (as *Server) ImportSite(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	restrictedDialer := dialer.Dialer()
+	// Certificate verification is ON by default. Cloning engagement targets
+	// that present self-signed/untrusted certs (common in test/staging) can
+	// be enabled by an operator via the "allow_insecure_import_tls" config
+	// flag; the URL is supplied by an authenticated admin, not an untrusted
+	// caller, so this stays an explicit, opt-in relaxation.
+	allowInsecure := false
+	if cfg := config.GetConfig(); cfg != nil {
+		allowInsecure = cfg.AllowInsecureImportTLS
+	}
 	tr := &http.Transport{
 		DialContext: restrictedDialer.DialContext,
-		// InsecureSkipVerify is intentional: this feature clones engagement
-		// targets that often present self-signed or otherwise untrusted
-		// certificates in test/staging environments. The fetched URL is
-		// supplied by an authenticated admin, not an untrusted caller.
 		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true,
+			InsecureSkipVerify: allowInsecure, // #nosec G402 -- opt-in only, default verifies
 		},
 	}
 	client := &http.Client{Transport: tr, Timeout: importSiteTimeout}

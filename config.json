@@ -16,6 +16,7 @@
 	"db_path": "vantage.db",
 	"migrations_prefix": "db/db_",
 	"contact_address": "",
+	"allow_insecure_import_tls": false,
 	"logging": {
 		"filename": "",
 		"level": ""
