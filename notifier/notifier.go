@@ -22,14 +22,23 @@ var conf *config.NotificationConfig
 // is ever malformed or tampered with.
 const slackWebhookHost = "hooks.slack.com"
 
-// isValidWebhookURL constrains the admin-configured Slack webhook to an https
-// URL on Slack's official webhook host.
-func isValidWebhookURL(raw string) bool {
+// safeSlackURL validates the admin-configured Slack webhook and returns a URL
+// rebuilt with a constant scheme and host. Only the path/query (which carry
+// Slack's per-workspace secret) are taken from the configured value, so the
+// request can only ever be sent to https://hooks.slack.com and never be
+// redirected to an attacker- or misconfiguration-chosen address.
+func safeSlackURL(raw string) (string, bool) {
 	u, err := url.Parse(raw)
-	if err != nil {
-		return false
+	if err != nil || u.Scheme != "https" || u.Hostname() != slackWebhookHost {
+		return "", false
 	}
-	return u.Scheme == "https" && u.Hostname() == slackWebhookHost
+	safe := url.URL{
+		Scheme:   "https",
+		Host:     slackWebhookHost,
+		Path:     u.Path,
+		RawQuery: u.RawQuery,
+	}
+	return safe.String(), true
 }
 
 // Setup initializes the notifier package with the provided configuration.
@@ -84,11 +93,12 @@ func sendSlack(msg string) {
 		log.Errorf("slack notification marshal error: %v", err)
 		return
 	}
-	if !isValidWebhookURL(conf.SlackWebhook) {
-		log.Errorf("slack notification error: webhook must be an absolute https URL")
+	endpoint, ok := safeSlackURL(conf.SlackWebhook)
+	if !ok {
+		log.Errorf("slack notification error: webhook must be an https URL on %s", slackWebhookHost)
 		return
 	}
-	resp, err := http.Post(conf.SlackWebhook, "application/json", bytes.NewBuffer(body))
+	resp, err := http.Post(endpoint, "application/json", bytes.NewBuffer(body))
 	if err != nil {
 		log.Errorf("slack notification error: %v", err)
 		return
