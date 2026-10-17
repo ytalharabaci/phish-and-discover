@@ -30,7 +30,7 @@ require (
 
 require (
 	filippo.io/csrf v0.2.1
-	github.com/mattn/go-sqlite3 v2.0.3+incompatible
+	github.com/mattn/go-sqlite3 v2.0.1+incompatible
 	github.com/shirou/gopsutil/v3 v3.24.5
 )
 
@@ -57,3 +57,8 @@ require (
 	golang.org/x/text v0.34.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 )
+
+// jinzhu/gorm v1.9.12 pins the mis-tagged go-sqlite3 v2.0.x+incompatible (which is
+// actually old v1-era code). Force a real, current v1.14.x so we build against an
+// up-to-date SQLite with its security and bug fixes.
+replace github.com/mattn/go-sqlite3 => github.com/mattn/go-sqlite3 v1.14.22
