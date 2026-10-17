@@ -16,17 +16,20 @@ import (
 
 var conf *config.NotificationConfig
 
-// isValidWebhookURL constrains the admin-configured Slack webhook to an
-// absolute https URL with a real host. This keeps the outbound notification
-// request from being pointed at arbitrary schemes/targets (e.g. http:// to an
-// internal address or a file:// path) if the config value is ever malformed
-// or tampered with.
+// slackWebhookHost is the only host a Slack incoming webhook is ever served
+// from. Pinning to it keeps the outbound notification request from being
+// redirected to an arbitrary (e.g. internal) address if the configured value
+// is ever malformed or tampered with.
+const slackWebhookHost = "hooks.slack.com"
+
+// isValidWebhookURL constrains the admin-configured Slack webhook to an https
+// URL on Slack's official webhook host.
 func isValidWebhookURL(raw string) bool {
 	u, err := url.Parse(raw)
 	if err != nil {
 		return false
 	}
-	return u.Scheme == "https" && u.Host != ""
+	return u.Scheme == "https" && u.Hostname() == slackWebhookHost
 }
 
 // Setup initializes the notifier package with the provided configuration.
