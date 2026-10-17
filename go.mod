@@ -22,7 +22,7 @@ require (
 	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/oschwald/maxminddb-golang v1.6.0
 	github.com/sirupsen/logrus v1.9.4
-	golang.org/x/crypto v0.48.0
+	golang.org/x/crypto v0.51.0
 	golang.org/x/time v0.0.0-20200416051211-89c76fbcd5d1
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405
@@ -30,7 +30,7 @@ require (
 
 require (
 	filippo.io/csrf v0.2.1
-	github.com/mattn/go-sqlite3 v2.0.3+incompatible
+	github.com/mattn/go-sqlite3 v2.0.1+incompatible
 	github.com/shirou/gopsutil/v3 v3.24.5
 )
 
@@ -52,8 +52,13 @@ require (
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	github.com/ziutek/mymysql v1.5.4 // indirect
-	golang.org/x/net v0.50.0 // indirect
-	golang.org/x/sys v0.42.0 // indirect
-	golang.org/x/text v0.34.0 // indirect
+	golang.org/x/net v0.55.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 )
+
+// jinzhu/gorm v1.9.12 pins the mis-tagged go-sqlite3 v2.0.x+incompatible (which is
+// actually old v1-era code). Force a real, current v1.14.x so we build against an
+// up-to-date SQLite with its security and bug fixes.
+replace github.com/mattn/go-sqlite3 => github.com/mattn/go-sqlite3 v1.14.22
