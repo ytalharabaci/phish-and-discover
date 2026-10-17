@@ -1,9 +1,11 @@
 name: Build & Deploy to VPS
 
+# NOTE: The target VPS has been decommissioned, so this pipeline no longer
+# runs automatically. It is kept for reference and can still be triggered
+# manually (workflow_dispatch) if a deployment target is restored and the
+# VPS_HOST / VPS_USER / VPS_SSH_KEY secrets are configured again.
 on:
-  push:
-    branches: [main]
-  workflow_dispatch:   # Elle de tetiklenebilsin
+  workflow_dispatch:   # Only manual, on-demand runs
 
 env:
   REGISTRY: ghcr.io

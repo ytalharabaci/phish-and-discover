@@ -1,0 +1,10 @@
+name: "Vantage CodeQL config"
+
+# Exclude third-party / generated code from analysis. These are not our
+# source and their findings (e.g. the bundled CKEditor spellchecker dialogs)
+# are not actionable without forking the upstream library.
+paths-ignore:
+  - vendor                      # Go vendored dependencies
+  - static/js/src/vendor        # bundled front-end libraries (CKEditor, etc.)
+  - static/js/dist              # built/minified JS bundles
+  - static/css/dist             # built/minified CSS bundles

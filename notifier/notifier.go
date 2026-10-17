@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os/exec"
 	"strings"
 	"time"
@@ -14,6 +15,19 @@ import (
 )
 
 var conf *config.NotificationConfig
+
+// isValidWebhookURL constrains the admin-configured Slack webhook to an
+// absolute https URL with a real host. This keeps the outbound notification
+// request from being pointed at arbitrary schemes/targets (e.g. http:// to an
+// internal address or a file:// path) if the config value is ever malformed
+// or tampered with.
+func isValidWebhookURL(raw string) bool {
+	u, err := url.Parse(raw)
+	if err != nil {
+		return false
+	}
+	return u.Scheme == "https" && u.Host != ""
+}
 
 // Setup initializes the notifier package with the provided configuration.
 func Setup(c *config.NotificationConfig) {
@@ -65,6 +79,10 @@ func sendSlack(msg string) {
 	body, err := json.Marshal(payload)
 	if err != nil {
 		log.Errorf("slack notification marshal error: %v", err)
+		return
+	}
+	if !isValidWebhookURL(conf.SlackWebhook) {
+		log.Errorf("slack notification error: webhook must be an absolute https URL")
 		return
 	}
 	resp, err := http.Post(conf.SlackWebhook, "application/json", bytes.NewBuffer(body))

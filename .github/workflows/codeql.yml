@@ -1,0 +1,58 @@
+name: CodeQL
+
+# Advanced CodeQL setup. It references .github/codeql/codeql-config.yml so we
+# can exclude vendored / generated code from analysis.
+#
+# IMPORTANT: GitHub will not run both "default" and "advanced" CodeQL setups at
+# once. For this workflow to take effect, disable CodeQL *default setup* under
+# Settings -> Code security and analysis -> Code scanning. Otherwise the
+# paths-ignore config below is ignored.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 3 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['actions', 'go', 'javascript-typescript']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        if: matrix.language == 'go'
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          config-file: ./.github/codeql/codeql-config.yml
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
