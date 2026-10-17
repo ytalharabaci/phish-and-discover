@@ -23,7 +23,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpcap-dev libdumbnet-dev gcc g++ make && \
     rm -rf /var/lib/apt/lists/*
 
-ENV GOPROXY=https://proxy.golang.org,direct CGO_ENABLED=1
+# GOTOOLCHAIN=auto lets `go install ...@latest` fetch a newer Go toolchain
+# on demand (e.g. ProjectDiscovery tools now require >= go 1.26), so this
+# stage keeps building as upstream tools bump their minimum Go version.
+ENV GOPROXY=https://proxy.golang.org,direct CGO_ENABLED=1 GOTOOLCHAIN=auto
 RUN set -eux; \
     # All required tools for Vantage platform
     go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest; \
