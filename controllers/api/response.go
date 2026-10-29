@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/models"
 
-	log "github.com/yusufarbc/vantage/logger"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
 )
 
 // JSONResponse attempts to set the status code, c, and marshal the given interface, d, into a response that

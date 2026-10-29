@@ -3,9 +3,9 @@ package api
 import (
 	"net/http"
 
-	"github.com/yusufarbc/vantage/auth"
-	ctx "github.com/yusufarbc/vantage/context"
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/auth"
+	ctx "github.com/ytalharabaci/phish-and-discover/context"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // Reset (/api/reset) resets the currently authenticated user's API key

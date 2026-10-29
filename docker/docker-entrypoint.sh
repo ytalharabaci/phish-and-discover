@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ═════════════════════════════════════════════════════════════════════════════════
-# VANTAGE Docker Entrypoint Script
+# PHISH & DISCOVER Docker Entrypoint Script
 # Handles initialization, configuration, and graceful startup
 # ═════════════════════════════════════════════════════════════════════════════════
 
@@ -39,20 +39,20 @@ log_error() {
 # ─────────────────────────────────────────────────────────────────────────────
 initialize_config() {
     log_info "Initializing configuration..."
-    VANTAGE_CONFIG_PATH="/tmp/config.json"
+    APP_CONFIG_PATH="/tmp/config.json"
     
     # Check if config.json exists, fallback to config.json.example
-    local src_config="/opt/vantage/config.json"
+    local src_config="/opt/phish-and-discover/config.json"
     if [ ! -f "$src_config" ]; then
         log_warn "config.json not found at $src_config, falling back to config.json.example"
-        src_config="/opt/vantage/config.json.example"
+        src_config="/opt/phish-and-discover/config.json.example"
     fi
     
     # Read environment variables with fallbacks
-    local db_path="${DB_PATH:-/opt/vantage/db/vantage.db}"
+    local db_path="${DB_PATH:-/opt/phish-and-discover/db/phish.db}"
     local admin_listen="${ADMIN_LISTEN:-0.0.0.0:3333}"
     local phish_listen="${PHISH_LISTEN:-0.0.0.0:8080}"
-    local migrations_prefix="${MIGRATIONS_PREFIX:-/opt/vantage/migrations/db_}"
+    local migrations_prefix="${MIGRATIONS_PREFIX:-/opt/phish-and-discover/migrations/db_}"
     local chisel_port="${CHISEL_SERVER_PORT:-9090}"
     # gorilla/handlers' ProxyHeaders sets r.URL.Scheme from X-Forwarded-Proto
     # but never sets r.URL.Host, so gorilla/csrf's same-origin check on HTTPS
@@ -75,9 +75,9 @@ initialize_config() {
        .admin_server.trusted_origins = [$admin_domain] |
        .phish_server.listen_url = $phish_listen |
        .chisel_server_port = $chisel_port' \
-      "$src_config" > "$VANTAGE_CONFIG_PATH"
+      "$src_config" > "$APP_CONFIG_PATH"
     
-    log_success "Configuration initialized (at $VANTAGE_CONFIG_PATH)"
+    log_success "Configuration initialized (at $APP_CONFIG_PATH)"
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -120,16 +120,16 @@ verify_capabilities() {
 initialize_database() {
     log_info "Initializing database..."
     
-    DB_DIR=$(dirname "${DB_PATH:-/opt/vantage/db/vantage.db}")
+    DB_DIR=$(dirname "${DB_PATH:-/opt/phish-and-discover/db/phish.db}")
     mkdir -p "$DB_DIR"
     
-    if [ -f "$DB_DIR/vantage.db" ]; then
+    if [ -f "$DB_DIR/phish.db" ]; then
         log_info "Database file already exists, skipping initialization"
     else
         log_info "Creating new database..."
-        # Database will be auto-created by Gophish/Vantage on first run
+        # Database will be auto-created by Phish & Discover on first run
         # This is just ensuring the directory exists
-        touch "$DB_DIR/vantage.db"
+        touch "$DB_DIR/phish.db"
     fi
     
     log_success "Database initialized"
@@ -141,7 +141,7 @@ initialize_database() {
 initialize_nuclei() {
     log_info "Checking Nuclei templates..."
     
-    NUCLEI_TEMPLATES_DIR="/home/vantage/.nuclei-templates"
+    NUCLEI_TEMPLATES_DIR="/home/phish/.nuclei-templates"
     mkdir -p "$NUCLEI_TEMPLATES_DIR"
     
     # Check if templates already cached
@@ -206,7 +206,7 @@ setup_signal_handlers() {
 # Health Check
 # ─────────────────────────────────────────────────────────────────────────────
 wait_for_service() {
-    log_info "Waiting for Vantage to become ready..."
+    log_info "Waiting for Phish & Discover to become ready..."
     
     TIMEOUT=120
     ELAPSED=0
@@ -214,7 +214,7 @@ wait_for_service() {
     
     while [ $ELAPSED -lt $TIMEOUT ]; do
         if curl -sf http://localhost:3333/ > /dev/null 2>&1; then
-            log_success "Vantage is ready!"
+            log_success "Phish & Discover is ready!"
             return 0
         fi
         
@@ -223,7 +223,7 @@ wait_for_service() {
         ELAPSED=$((ELAPSED + INTERVAL))
     done
     
-    log_error "Vantage failed to start within ${TIMEOUT}s"
+    log_error "Phish & Discover failed to start within ${TIMEOUT}s"
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -234,7 +234,7 @@ show_banner() {
 
 ${BLUE}╔════════════════════════════════════════════════════════════════╗${NC}
 ${BLUE}║                                                                ║${NC}
-${BLUE}║  VANTAGE - Unified Security Operations Platform               ║${NC}
+${BLUE}║  PHISH & DISCOVER - Unified Security Operations Platform               ║${NC}
 ${BLUE}║  Gophish + ProjectDiscovery Tools + Reverse Tunneling         ║${NC}
 ${BLUE}║                                                                ║${NC}
 ${BLUE}║  Starting Docker Container...                                 ║${NC}
@@ -250,7 +250,7 @@ EOF
 main() {
     show_banner
     
-    log_info "Starting Vantage initialization sequence..."
+    log_info "Starting Phish & Discover initialization sequence..."
     
     # Run initialization steps
     initialize_config
@@ -261,7 +261,7 @@ main() {
     
     log_success "Initialization complete!"
     log_info ""
-    log_info "Starting Vantage Server..."
+    log_info "Starting Phish & Discover Server..."
     log_info ""
     log_info "Available ports:"
     log_info "  - Admin Dashboard: http://localhost:3333"
@@ -274,7 +274,7 @@ main() {
     setup_signal_handlers
     
     # Execute the command passed to entrypoint with the working config
-    exec "$@" --config "$VANTAGE_CONFIG_PATH"
+    exec "$@" --config "$APP_CONFIG_PATH"
 }
 
 # Run main

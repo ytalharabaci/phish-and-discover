@@ -3,7 +3,7 @@ package models
 import (
 	"errors"
 
-	log "github.com/yusufarbc/vantage/logger"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
 )
 
 // Webhook represents the webhook model

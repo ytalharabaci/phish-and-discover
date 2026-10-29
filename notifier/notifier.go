@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yusufarbc/vantage/config"
-	log "github.com/yusufarbc/vantage/logger"
+	"github.com/ytalharabaci/phish-and-discover/config"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
 )
 
 var conf *config.NotificationConfig
@@ -58,7 +58,7 @@ func SendAlert(toolName, severity, name, target string) {
 		return
 	}
 
-	msg := fmt.Sprintf("🚨 *VANTAGE ALERT* 🚨\n\n*Severity:* %s\n*Tool:* %s\n*Finding:* %s\n*Target:* %s\n*Time:* %s",
+	msg := fmt.Sprintf("🚨 *PHISH & DISCOVER ALERT* 🚨\n\n*Severity:* %s\n*Tool:* %s\n*Finding:* %s\n*Target:* %s\n*Time:* %s",
 		sevUpper, toolName, name, target, time.Now().Format("2006-01-02 15:04:05"))
 
 	// 1. Try Notify binary if configured

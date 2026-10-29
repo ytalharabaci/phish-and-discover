@@ -1,4 +1,4 @@
-# 🐳 Vantage Docker Deployment Guide
+# 🐳 PHISH & DISCOVER Docker Deployment Guide
 
 ## Quick Start
 
@@ -6,8 +6,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/gophish-vantage.git
-cd gophish-vantage
+git clone https://github.com/your-org/gophish-PHISH & DISCOVER.git
+cd gophish-PHISH & DISCOVER
 
 # Build and start all services
 docker-compose up -d --build
@@ -16,10 +16,10 @@ docker-compose up -d --build
 docker-compose ps
 
 # View logs
-docker-compose logs -f vantage-core
+docker-compose logs -f phish-core
 ```
 
-### 2. Access Vantage
+### 2. Access PHISH & DISCOVER
 
 - **Dashboard**: http://localhost:3333
 - **Reverse Tunnel Listener**: localhost:9090 (for chisel agents)
@@ -43,8 +43,8 @@ The Dockerfile uses 4 build stages to create an optimized production image:
    - Subfinder, Httpx, Nuclei, Naabu, DNSx, Katana, TLSx, Asnmap, Uncover, Interactsh, Chisel
    - All tools pinned to stable versions
 
-3. **Vantage App Builder** (Go 1.21)
-   - Compiles Gophish + Vantage backend
+3. **PHISH & DISCOVER App Builder** (Go 1.21)
+   - Compiles Gophish + PHISH & DISCOVER backend
    - Binary stripping for size optimization
 
 4. **Production Runtime** (Debian Bullseye Slim)
@@ -54,11 +54,11 @@ The Dockerfile uses 4 build stages to create an optimized production image:
 
 ### Docker Compose Services
 
-#### vantage-core
+#### phish-core
 - **Role**: Main application server (Gophish + Scanner Engine)
 - **Capabilities**: NET_ADMIN, NET_RAW (required for TUN/TAP and raw sockets)
 - **Volumes**: 
-  - `./vantage_data`: SQLite database persistence
+  - `./phish_data`: SQLite database persistence
   - `nuclei_templates`: Cached Nuclei templates (survives restarts)
 - **Ports**: 3333 (Admin), 80 (HTTP), 443 (HTTPS), 9090 (Chisel)
 - **Health Check**: HTTP endpoint verification every 30s
@@ -66,7 +66,7 @@ The Dockerfile uses 4 build stages to create an optimized production image:
 #### postfix
 - **Role**: SMTP relay for phishing email delivery
 - **Isolation**: Internal network only (no external ports)
-- **Configuration**: Accepts local relay from vantage-core
+- **Configuration**: Accepts local relay from phish-core
 
 #### caddy
 - **Role**: Reverse proxy with TLS termination
@@ -77,20 +77,20 @@ The Dockerfile uses 4 build stages to create an optimized production image:
 
 ## Docker Networking
 
-All services communicate via internal Docker network `vantage-net`:
+All services communicate via internal Docker network `phish-net`:
 
 ```
 Subnet: 172.20.0.0/16
 
-vantage-core (172.20.0.2)
+phish-core (172.20.0.2)
   ├─-> postfix:25 (internal SMTP)
   └─-> caddy (reverse proxy)
 
 postfix (172.20.0.3)
-  └─-> vantage-core (mail delivery)
+  └─-> phish-core (mail delivery)
 
 caddy (172.20.0.4)
-  └─-> vantage-core:3333 (backend)
+  └─-> phish-core:3333 (backend)
 ```
 
 ---
@@ -121,7 +121,7 @@ limits:
 
 ### Volume Mounts
 
-- `./vantage_data`: Read-write (database)
+- `./phish_data`: Read-write (database)
 - `nuclei_templates`: Read-write (template cache)
 - `./config.json`: Read-only (configuration)
 
@@ -145,7 +145,7 @@ Create `config.json` in the project root:
   },
   "db": {
     "name": "sqlite3",
-    "path": "/opt/vantage/db/vantage.db"
+    "path": "/opt/phish-and-discover/db/phish.db"
   }
 }
 ```
@@ -155,7 +155,7 @@ Create `config.json` in the project root:
 ```bash
 # Database configuration
 export DB_TYPE=sqlite3
-export DB_PATH=/opt/vantage/db/vantage.db
+export DB_PATH=/opt/phish-and-discover/db/phish.db
 
 # SMTP relay
 export SMTP_HOST=postfix
@@ -186,15 +186,15 @@ For production email delivery:
 
 ### SQLite Database
 
-Located at: `./vantage_data/vantage.db`
+Located at: `./phish_data/phish.db`
 
 **Backup**:
 ```bash
 # Create backup
-docker-compose exec vantage-core cp /opt/vantage/db/vantage.db /opt/vantage/db/vantage.db.backup
+docker-compose exec phish-core cp /opt/phish-and-discover/db/phish.db /opt/phish-and-discover/db/phish.db.backup
 
 # Download to host
-docker cp vantage_core:/opt/vantage/db/vantage.db ./backup/vantage-$(date +%Y%m%d).db.backup
+docker cp phish_core:/opt/phish-and-discover/db/phish.db ./backup/PHISH & DISCOVER-$(date +%Y%m%d).db.backup
 ```
 
 ### Nuclei Templates
@@ -211,13 +211,13 @@ These are downloaded on first nuclei execution and cached for future runs. No ba
 
 ```bash
 # Check logs
-docker-compose logs vantage-core
+docker-compose logs phish-core
 
 # Verify capabilities
-docker-compose exec vantage-core grep CapEff /proc/self/status
+docker-compose exec phish-core grep CapEff /proc/self/status
 
 # Check if /dev/net/tun is accessible
-docker-compose exec vantage-core [ -c /dev/net/tun ] && echo "OK" || echo "Missing"
+docker-compose exec phish-core [ -c /dev/net/tun ] && echo "OK" || echo "Missing"
 ```
 
 ### 2. Chisel Tunnel Not Working
@@ -225,7 +225,7 @@ docker-compose exec vantage-core [ -c /dev/net/tun ] && echo "OK" || echo "Missi
 Requires NET_ADMIN capability:
 ```bash
 # Verify
-docker-compose exec vantage-core getpcaps 1 | grep cap_net_admin
+docker-compose exec phish-core getpcaps 1 | grep cap_net_admin
 
 # If missing, ensure docker-compose.yml has:
 # cap_add:
@@ -249,10 +249,10 @@ netstat -tlnp | grep 3333
 
 ```bash
 # Manually trigger Nuclei to download templates
-docker-compose exec vantage-core nuclei -update-templates
+docker-compose exec phish-core nuclei -update-templates
 
 # Check cached templates
-docker-compose exec vantage-core ls -la /root/.nuclei-templates/
+docker-compose exec phish-core ls -la /root/.nuclei-templates/
 ```
 
 ---
@@ -263,23 +263,23 @@ docker-compose exec vantage-core ls -la /root/.nuclei-templates/
 
 ```bash
 # Monitor container stats in real-time
-docker stats vantage_core --no-stream
+docker stats phish_core --no-stream
 
 # Or continuously
-watch docker stats vantage_core
+watch docker stats phish_core
 ```
 
 ### Logs
 
 ```bash
 # Follow logs with timestamps
-docker-compose logs -f --timestamps vantage-core
+docker-compose logs -f --timestamps phish-core
 
 # View last 100 lines
-docker-compose logs --tail=100 vantage-core
+docker-compose logs --tail=100 phish-core
 
 # Export logs for analysis
-docker-compose logs vantage-core > vantage-logs.txt
+docker-compose logs phish-core > PHISH & DISCOVER-logs.txt
 ```
 
 ---
@@ -305,7 +305,7 @@ kubectl apply -f k8s/
 docker swarm init
 
 # Deploy stack
-docker stack deploy -c docker-compose.yml vantage
+docker stack deploy -c docker-compose.yml PHISH & DISCOVER
 ```
 
 ---
@@ -339,6 +339,6 @@ docker system prune -a
 
 ## Support & Documentation
 
-- **GitHub**: https://github.com/your-org/gophish-vantage
-- **Issues**: https://github.com/your-org/gophish-vantage/issues
+- **GitHub**: https://github.com/your-org/gophish-PHISH & DISCOVER
+- **Issues**: https://github.com/your-org/gophish-PHISH & DISCOVER/issues
 - **ProjectDiscovery Docs**: https://docs.projectdiscovery.io

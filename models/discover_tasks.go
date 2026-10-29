@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// ScanOptions holds granular configurations for each tool in the Vantage engine.
+// ScanOptions holds granular configurations for each tool in the Discover engine.
 type ScanOptions struct {
 	NucleiTags       []string `json:"nuclei_tags"`
 	NucleiSeverities []string `json:"nuclei_severities"`

@@ -15,45 +15,45 @@ type Config struct {
 	Level    string `json:"level"`
 }
 
-// VantageLogger wraps slog.Logger to provide compatibility with legacy logging patterns.
-type VantageLogger struct {
+// AppLogger wraps slog.Logger to provide compatibility with legacy logging patterns.
+type AppLogger struct {
 	*slog.Logger
 }
 
-func (l *VantageLogger) Debug(msg any, args ...any) {
+func (l *AppLogger) Debug(msg any, args ...any) {
 	l.Logger.Debug(msgToString(msg), args...)
 }
 
-func (l *VantageLogger) Info(msg any, args ...any) {
+func (l *AppLogger) Info(msg any, args ...any) {
 	l.Logger.Info(msgToString(msg), args...)
 }
 
-func (l *VantageLogger) Warn(msg any, args ...any) {
+func (l *AppLogger) Warn(msg any, args ...any) {
 	l.Logger.Warn(msgToString(msg), args...)
 }
 
-func (l *VantageLogger) Error(msg any, args ...any) {
+func (l *AppLogger) Error(msg any, args ...any) {
 	l.Logger.Error(msgToString(msg), args...)
 }
 
-func (l *VantageLogger) Debugf(format string, args ...any) {
+func (l *AppLogger) Debugf(format string, args ...any) {
 	l.Logger.Debug(fmt.Sprintf(format, args...))
 }
 
-func (l *VantageLogger) Infof(format string, args ...any) {
+func (l *AppLogger) Infof(format string, args ...any) {
 	l.Logger.Info(fmt.Sprintf(format, args...))
 }
 
-func (l *VantageLogger) Warnf(format string, args ...any) {
+func (l *AppLogger) Warnf(format string, args ...any) {
 	l.Logger.Warn(fmt.Sprintf(format, args...))
 }
 
-func (l *VantageLogger) Errorf(format string, args ...any) {
+func (l *AppLogger) Errorf(format string, args ...any) {
 	l.Logger.Error(fmt.Sprintf(format, args...))
 }
 
 // Global logger and writer
-var Logger *VantageLogger
+var Logger *AppLogger
 var logWriter io.Writer = os.Stderr
 
 // Writer returns the current log writer
@@ -63,7 +63,7 @@ func Writer() io.Writer {
 
 func init() {
 	// Default logger
-	Logger = &VantageLogger{
+	Logger = &AppLogger{
 		slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
 			Level: slog.LevelInfo,
 		})),
@@ -100,7 +100,7 @@ func Setup(config *Config) error {
 	})
 
 	logWriter = out
-	Logger = &VantageLogger{slog.New(handler)}
+	Logger = &AppLogger{slog.New(handler)}
 	slog.SetDefault(Logger.Logger)
 
 	return nil
@@ -164,20 +164,20 @@ func Fatalf(format string, args ...any) {
 }
 
 // WithFields implements legacy support for logrus-style fields
-func WithFields(fields map[string]interface{}) *VantageLogger {
+func WithFields(fields map[string]interface{}) *AppLogger {
 	attrs := make([]any, 0, len(fields)*2)
 	for k, v := range fields {
 		attrs = append(attrs, k, v)
 	}
-	return &VantageLogger{Logger.With(attrs...)}
+	return &AppLogger{Logger.With(attrs...)}
 }
 
 // With returns a logger with context (for task-specific logging)
-func With(args ...any) *VantageLogger {
-	return &VantageLogger{Logger.With(args...)}
+func With(args ...any) *AppLogger {
+	return &AppLogger{Logger.With(args...)}
 }
 
-func WithContext(ctx context.Context) *VantageLogger {
+func WithContext(ctx context.Context) *AppLogger {
 	return Logger
 }
 

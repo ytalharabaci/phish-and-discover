@@ -17,12 +17,12 @@ var (
 	domainRegex            = regexp.MustCompile(`^(?i)([a-z0-9-]+\.)+[a-z]{2,}$`)
 )
 
-// TargetAsset stores managed scan scope for Vantage.
+// TargetAsset stores managed scan scope for Phish & Discover.
 // Table name is intentionally separated from Gophish's existing targets table.
 type TargetAsset struct {
 	ID                uint       `gorm:"primary_key;AUTO_INCREMENT" json:"id"`
-	UserID            int64      `gorm:"not null;index;unique_index:idx_vantage_target_user_value" json:"user_id"`
-	Value             string     `gorm:"not null;size:512;unique_index:idx_vantage_target_user_value" json:"value"`
+	UserID            int64      `gorm:"not null;index;unique_index:idx_discover_target_user_value" json:"user_id"`
+	Value             string     `gorm:"not null;size:512;unique_index:idx_discover_target_user_value" json:"value"`
 	InputType         string     `gorm:"not null;size:32;index" json:"input_type"`
 	Source            string     `gorm:"size:32;index" json:"source"`
 	Tag               string     `gorm:"size:64;index" json:"tag"`
@@ -36,7 +36,7 @@ type TargetAsset struct {
 }
 
 func (TargetAsset) TableName() string {
-	return "vantage_targets"
+	return "discover_targets"
 }
 
 // UpsertTargetAsset inserts or updates a managed target asset.

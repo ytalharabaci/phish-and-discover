@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/models"
-	"github.com/yusufarbc/vantage/pkg/network"
+	"github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/models"
+	"github.com/ytalharabaci/phish-and-discover/pkg/network"
 )
 
 // ── WebSocket Support for Live Scanner Logs ────────────────────────────────────
@@ -173,7 +173,7 @@ func StopScan(scanID uint) error {
 	cancel()
 	UnregisterScan(scanID)
 	_ = models.UpdateScanTaskProgress(scanID, "stopped", 0)
-	emitLog(fmt.Sprintf("[VANTAGE] !! Scan %d stopped by user", scanID))
+	emitLog(fmt.Sprintf("[DISCOVER] !! Scan %d stopped by user", scanID))
 	return nil
 }
 
@@ -187,9 +187,9 @@ func emitLog(msg string) {
 	}
 }
 
-// ── VantageScanService Implementation ────────────────────────────────────────
+// ── DiscoverScanService Implementation ────────────────────────────────────────
 
-type VantageScanService struct {
+type DiscoverScanService struct {
 	Executor ToolExecutor
 	State    *ScanState
 }
@@ -197,13 +197,13 @@ type VantageScanService struct {
 var DefaultScanService ScanService
 
 func InitDefaultService() {
-	DefaultScanService = &VantageScanService{
+	DefaultScanService = &DiscoverScanService{
 		Executor: &DefaultExecutor{Persister: &GormPersister{}},
 		State:    scanState,
 	}
 }
 
-func (s *VantageScanService) RunScannerTool(userID int64, scanID uint, toolName, target, ifaceName string, opts models.ScanOptions) error {
+func (s *DiscoverScanService) RunScannerTool(userID int64, scanID uint, toolName, target, ifaceName string, opts models.ScanOptions) error {
 	if err := ensureInterfaceForScan(toolName, target, ifaceName); err != nil {
 		return err
 	}
@@ -227,7 +227,7 @@ func (s *VantageScanService) RunScannerTool(userID int64, scanID uint, toolName,
 		// Structured logging with slog
 		log := logger.With("task_id", scanID, "tool", toolName, "target", target, "interface", ifaceName)
 		log.Info("Starting scanner tool execution")
-		emitLog(fmt.Sprintf("[VANTAGE] ▶ Starting %s on target=%s", strings.ToUpper(toolName), target))
+		emitLog(fmt.Sprintf("[DISCOVER] ▶ Starting %s on target=%s", strings.ToUpper(toolName), target))
 
 		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Hour)
 		RegisterScan(scanID, cancel)
@@ -246,7 +246,7 @@ func (s *VantageScanService) RunScannerTool(userID int64, scanID uint, toolName,
 						_, _, connected, _ := network.GlobalTunnelManager().AgentConnected()
 						if !connected {
 							log.Warn("TUN interface dropped, stopping dependent scan tasks")
-							emitLog("[VANTAGE] !! FATAL: TUN interface lost. Stopping scan to prevent data leakage.")
+							emitLog("[DISCOVER] !! FATAL: TUN interface lost. Stopping scan to prevent data leakage.")
 							cancel()
 							return
 						}
@@ -264,12 +264,12 @@ func (s *VantageScanService) RunScannerTool(userID int64, scanID uint, toolName,
 
 		_ = models.UpdateScanTaskProgress(scanID, "running", 90)
 		log.Info("Scanner tool execution finished")
-		emitLog(fmt.Sprintf("[VANTAGE] ✔ %s finished", strings.ToUpper(toolName)))
+		emitLog(fmt.Sprintf("[DISCOVER] ✔ %s finished", strings.ToUpper(toolName)))
 	}()
 	return nil
 }
 
-func (s *VantageScanService) RunDiscovery(userID int64, scanID uint, target, ifaceName string, opts models.ScanOptions) error {
+func (s *DiscoverScanService) RunDiscovery(userID int64, scanID uint, target, ifaceName string, opts models.ScanOptions) error {
 	if err := ensureInterfaceForScan("discovery", target, ifaceName); err != nil {
 		return err
 	}
@@ -286,21 +286,21 @@ func (s *VantageScanService) RunDiscovery(userID int64, scanID uint, target, ifa
 			s.State.ReleaseLock()
 		}()
 
-		emitLog("[VANTAGE] ═══ STARTING FULL DISCOVERY PIPELINE ════════════")
+		emitLog("[DISCOVER] ═══ STARTING FULL DISCOVERY PIPELINE ════════════")
 		ctx, cancel := context.WithTimeout(context.Background(), 6*time.Hour) // Extended timeout for deep discovery
 		RegisterScan(scanID, cancel)
 		defer UnregisterScan(scanID)
 
 		// ── PHASE 1: OSINT & Asset Discovery ──────────────────────────────────
 		_ = models.UpdateScanTaskProgress(scanID, "running", 5)
-		emitLog("[VANTAGE] Phase 1a — Subdomain Discovery (Subfinder)")
+		emitLog("[DISCOVER] Phase 1a — Subdomain Discovery (Subfinder)")
 		subArgs := buildScannerArgs("subfinder", target, ifaceName, opts)
 		subs, _ := s.Executor.Collect(ctx, userID, "subfinder", target, ifaceName, subArgs)
 		if ctx.Err() != nil {
 			return
 		}
 
-		emitLog("[VANTAGE] Phase 1b — DNS Resolution & Wildcard Filtering (DNSx)")
+		emitLog("[DISCOVER] Phase 1b — DNS Resolution & Wildcard Filtering (DNSx)")
 		// DNSx resolution for discovered subdomains
 		dnsTargets := deduplicateTargets(append(subs, target))
 		dnsArgs := append([]string{"dnsx", "-json", "-silent", "-wd", target}, targetsToArgs("-d", dnsTargets)...)
@@ -314,7 +314,7 @@ func (s *VantageScanService) RunDiscovery(userID int64, scanID uint, target, ifa
 
 		// ── PHASE 2: Network & Port Scanning ──────────────────────────────────
 		_ = models.UpdateScanTaskProgress(scanID, "running", 25)
-		emitLog(fmt.Sprintf("[VANTAGE] Phase 2 — Port Scanning (%d targets) (Naabu)", len(resolved)))
+		emitLog(fmt.Sprintf("[DISCOVER] Phase 2 — Port Scanning (%d targets) (Naabu)", len(resolved)))
 		naabuArgs := append([]string{"naabu", "-json", "-silent", "-top-ports", "1000"}, targetsToArgs("-host", resolved)...)
 		if ifaceName != "" {
 			naabuArgs = append(naabuArgs, "-interface", ifaceName)
@@ -329,14 +329,14 @@ func (s *VantageScanService) RunDiscovery(userID int64, scanID uint, target, ifa
 
 		// ── PHASE 3: Surface Mapping & HTTP Probing ───────────────────────────
 		_ = models.UpdateScanTaskProgress(scanID, "running", 45)
-		emitLog(fmt.Sprintf("[VANTAGE] Phase 3a — HTTP Probing (%d targets) (Httpx)", len(openPorts)))
+		emitLog(fmt.Sprintf("[DISCOVER] Phase 3a — HTTP Probing (%d targets) (Httpx)", len(openPorts)))
 		httpxArgs := append([]string{"httpx", "-json", "-silent", "-tech-detect", "-status-code"}, targetsToArgs("-u", openPorts)...)
 		liveURLs, _ := s.Executor.Collect(ctx, userID, "httpx", target, ifaceName, httpxArgs)
 		if ctx.Err() != nil {
 			return
 		}
 
-		emitLog("[VANTAGE] Phase 3b — TLS/SSL Analysis (TLSx)")
+		emitLog("[DISCOVER] Phase 3b — TLS/SSL Analysis (TLSx)")
 		tlsArgs := append([]string{"tlsx", "-json", "-silent", "-san"}, targetsToArgs("-u", openPorts)...)
 		_, _ = s.Executor.Collect(ctx, userID, "tlsx", target, ifaceName, tlsArgs)
 		if ctx.Err() != nil {
@@ -346,7 +346,7 @@ func (s *VantageScanService) RunDiscovery(userID int64, scanID uint, target, ifa
 		// ── PHASE 4: Crawling & Spidering ─────────────────────────────────────
 		_ = models.UpdateScanTaskProgress(scanID, "running", 70)
 		if len(liveURLs) > 0 {
-			emitLog(fmt.Sprintf("[VANTAGE] Phase 4 — Crawling & Spidering (%d URLs) (Katana)", len(liveURLs)))
+			emitLog(fmt.Sprintf("[DISCOVER] Phase 4 — Crawling & Spidering (%d URLs) (Katana)", len(liveURLs)))
 			// Limit crawling to top 10 discovery URLs to avoid infinite loops in discovery mode
 			crawlTargets := liveURLs
 			if len(crawlTargets) > 10 {
@@ -364,7 +364,7 @@ func (s *VantageScanService) RunDiscovery(userID int64, scanID uint, target, ifa
 		// ── PHASE 5: Vulnerability Scanning ───────────────────────────────────
 		_ = models.UpdateScanTaskProgress(scanID, "running", 85)
 		vulnTargets := deduplicateTargets(append(liveURLs, resolved...))
-		emitLog(fmt.Sprintf("[VANTAGE] Phase 5 — Vulnerability Scanning (%d targets) (Nuclei)", len(vulnTargets)))
+		emitLog(fmt.Sprintf("[DISCOVER] Phase 5 — Vulnerability Scanning (%d targets) (Nuclei)", len(vulnTargets)))
 		// We process nuclei one by one to better track progress and avoid massive CLI arg lists
 		for i, vTarget := range vulnTargets {
 			if ctx.Err() != nil {
@@ -376,12 +376,12 @@ func (s *VantageScanService) RunDiscovery(userID int64, scanID uint, target, ifa
 			_ = s.Executor.Execute(ctx, userID, "nuclei", vTarget, ifaceName, nucleiArgs)
 		}
 
-		emitLog("[VANTAGE] ═══ DISCOVERY PIPELINE COMPLETE ════════════════")
+		emitLog("[DISCOVER] ═══ DISCOVERY PIPELINE COMPLETE ════════════════")
 	}()
 	return nil
 }
 
-func (s *VantageScanService) RunTask(userID int64, scanID uint, target, ifaceName string, tools []string, opts models.ScanOptions) error {
+func (s *DiscoverScanService) RunTask(userID int64, scanID uint, target, ifaceName string, tools []string, opts models.ScanOptions) error {
 	if err := ensureInterfaceForScan("task", target, ifaceName); err != nil {
 		return err
 	}

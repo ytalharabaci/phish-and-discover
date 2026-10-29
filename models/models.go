@@ -16,9 +16,9 @@ import (
 	mysql "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/yusufarbc/vantage/auth"
-	"github.com/yusufarbc/vantage/config"
-	log "github.com/yusufarbc/vantage/logger"
+	"github.com/ytalharabaci/phish-and-discover/auth"
+	"github.com/ytalharabaci/phish-and-discover/config"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
 )
 
 var db *gorm.DB

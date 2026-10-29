@@ -8,7 +8,7 @@ import (
 
 	"github.com/gophish/gomail"
 	"github.com/sirupsen/logrus"
-	log "github.com/yusufarbc/vantage/logger"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
 )
 
 // MaxReconnectAttempts is the maximum number of times we should reconnect to a server
@@ -174,7 +174,7 @@ func sendMail(ctx context.Context, dialer Dialer, ms []Mail) {
 				switch {
 				// If it's a temporary error, we should backoff and try again later.
 				// We'll reset the connection so future messages don't incur a
-				// different error (see https://github.com/yusufarbc/vantage/issues/787).
+				// different error (see https://github.com/ytalharabaci/phish-and-discover/issues/787).
 				case te.Code >= 400 && te.Code <= 499:
 					log.WithFields(logrus.Fields{
 						"code":  te.Code,

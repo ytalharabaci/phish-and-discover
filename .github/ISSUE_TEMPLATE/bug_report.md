@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a problem with Vantage
+about: Report a problem with Phish & Discover
 title: ''
 labels: bug
 assignees: ''
@@ -12,7 +12,7 @@ assignees: ''
 
 Before filing a new issue, please search existing issues for similar reports.
 
-What version of Vantage are you using?:
+What version of Phish & Discover are you using?:
 
 Brief description of the issue:
 

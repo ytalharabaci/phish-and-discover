@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
-	log "github.com/yusufarbc/vantage/logger"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
 )
 
 // Template models hold the attributes for an email template to be sent to targets

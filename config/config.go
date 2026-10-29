@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	log "github.com/yusufarbc/vantage/logger"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
 )
 
 // AdminServer represents the Admin server configuration details

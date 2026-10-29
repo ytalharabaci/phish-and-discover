@@ -3,7 +3,7 @@ package models
 import (
 	"testing"
 
-	"github.com/yusufarbc/vantage/config"
+	"github.com/ytalharabaci/phish-and-discover/config"
 	"gopkg.in/check.v1"
 )
 

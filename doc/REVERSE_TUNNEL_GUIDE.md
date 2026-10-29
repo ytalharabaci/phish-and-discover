@@ -1,14 +1,14 @@
-# Vantage Reverse L3 Tunnel & Internal Scanning Guide
+# PHISH & DISCOVER Reverse L3 Tunnel & Internal Scanning Guide
 
-This guide explains how to use the **Reverse L3 Tunnel** feature in Vantage to scan internal networks that are behind firewalls or NAT.
+This guide explains how to use the **Reverse L3 Tunnel** feature in PHISH & DISCOVER to scan internal networks that are behind firewalls or NAT.
 
 ---
 
 ## 🏗️ How it Works
 
-Vantage uses **Chisel** to establish a secure, reverse tunnel from an internal machine (Agent) to your VPS (Vantage Server). 
+PHISH & DISCOVER uses **Chisel** to establish a secure, reverse tunnel from an internal machine (Agent) to your VPS (PHISH & DISCOVER Server). 
 
-1. **Vantage Server**: Runs a Chisel server on port `9090`.
+1. **PHISH & DISCOVER Server**: Runs a Chisel server on port `9090`.
 2. **Internal Agent**: Connects to the VPS and requests a reverse TUN device.
 3. **Virtual Interface**: A `tun0` interface is automatically created on the VPS.
 4. **Routing**: You add routes on the VPS to send traffic for internal CIDRs (e.g., `192.168.1.0/24`) through `tun0`.
@@ -18,7 +18,7 @@ Vantage uses **Chisel** to establish a secure, reverse tunnel from an internal m
 
 ## 🚀 Step 1: Start the Tunnel Server
 
-1. Open the Vantage Dashboard and navigate to the **Scanner** tab.
+1. Open the PHISH & DISCOVER Dashboard and navigate to the **Scanner** tab.
 2. Locate the **Reverse Tunnel (Chisel)** panel.
 3. Click **Start Server**.
 4. The status badge should change to **Server Running** (blue).
@@ -38,21 +38,21 @@ curl https://i.jpillora.com/chisel! | bash
 go install github.com/jpillora/chisel@latest
 ```
 
-### 2. Connect to Vantage
+### 2. Connect to PHISH & DISCOVER
 Run the following command on the internal machine (replace `<YOUR-VPS-IP>` with your server's IP):
 ```bash
 chisel client http://<YOUR-VPS-IP>:9090 R:tun0:0.0.0.0
 ```
 
 > [!TIP]
-> **Security**: It is highly recommended to use authentication. Set `VANTAGE_TUNNEL_SECRET` environment variable on the VPS and connect with:
+> **Security**: It is highly recommended to use authentication. Set `PHISH & DISCOVER_TUNNEL_SECRET` environment variable on the VPS and connect with:
 > `chisel client --auth user:pass http://<VPS-IP>:9090 R:tun0:0.0.0.0`
 
 ---
 
 ## 🌐 Step 3: Manage Routing
 
-Once the agent is connected, the **Vantage Agent** status badge in the sidebar will turn green and show the `tun0` IP address.
+Once the agent is connected, the **PHISH & DISCOVER Agent** status badge in the sidebar will turn green and show the `tun0` IP address.
 
 ### Adding a Route
 To scan `192.168.1.0/24`:
@@ -103,11 +103,11 @@ If you want to wrap the tunnel in HTTPS via Caddy (port 443) for added security 
 ```caddy
 {$DOMAIN} {
     # Existing Gophish Proxy
-    reverse_proxy vantage-core:3333
+    reverse_proxy phish-core:3333
 
     # Chisel WebSocket Proxy
     handle /chisel/* {
-        reverse_proxy vantage-core:9090
+        reverse_proxy phish-core:9090
     }
 }
 ```
@@ -121,7 +121,7 @@ chisel client https://gophish.example.com/chisel R:tun0:0.0.0.0
 
 ## ⚠️ Troubleshooting
 
-1. **tun0 doesn't appear**: Ensure the Vantage container was started with `cap_add: NET_ADMIN` and `devices: /dev/net/tun`.
+1. **tun0 doesn't appear**: Ensure the PHISH & DISCOVER container was started with `cap_add: NET_ADMIN` and `devices: /dev/net/tun`.
 2. **Permission Denied**: Run the `setup-tun.sh` script inside the container if it doesn't auto-initialize.
 3. **No route to host**: Verify that `ip route show` inside the container includes your internal CIDR via `tun0`.
-4. **Tool bind error**: Some tools require root/sudo to bind to specific interfaces. The Vantage Dockerfile already handles `setcap` for the binary.
+4. **Tool bind error**: Some tools require root/sudo to bind to specific interfaces. The PHISH & DISCOVER Dockerfile already handles `setcap` for the binary.

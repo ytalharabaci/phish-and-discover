@@ -5,9 +5,9 @@ import (
 	"os"
 	"sort"
 
-	"github.com/yusufarbc/vantage/models"
-	"github.com/yusufarbc/vantage/pkg/dockerstatus"
-	"github.com/yusufarbc/vantage/pkg/sysinfo"
+	"github.com/ytalharabaci/phish-and-discover/models"
+	"github.com/ytalharabaci/phish-and-discover/pkg/dockerstatus"
+	"github.com/ytalharabaci/phish-and-discover/pkg/sysinfo"
 )
 
 // UserLoginInfo is the last-login summary exposed on the System Status page.

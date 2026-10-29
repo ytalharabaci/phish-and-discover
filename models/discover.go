@@ -47,9 +47,9 @@ type Finding struct {
 
 // ── Phishing Campaign Extension ───────────────────────────────────────────────
 
-// VantageRiskScoring holds risk scores across Gophish campaigns and PD findings.
+// RiskScoring holds risk scores across Gophish campaigns and PD findings.
 // This is a computed model, not persisted to the main Campaign table.
-type VantageRiskScoring struct {
+type RiskScoring struct {
 	CampaignID  int       `json:"campaign_id"`
 	TargetName  string    `json:"target_name"`
 	Severity    string    `json:"severity"`

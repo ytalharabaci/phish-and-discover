@@ -36,7 +36,7 @@ var TEMPLATE_TAGS = [{
     {
         id: 8,
         name: 'URL',
-        description: 'The URL to your Vantage listener.'
+        description: 'The URL to your Phish & Discover listener.'
     },
     {
         id: 9,

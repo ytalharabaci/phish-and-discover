@@ -6,10 +6,10 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/yusufarbc/vantage/auth"
-	ctx "github.com/yusufarbc/vantage/context"
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/auth"
+	ctx "github.com/ytalharabaci/phish-and-discover/context"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // ErrUsernameTaken is thrown when a user attempts to register a username that is taken.

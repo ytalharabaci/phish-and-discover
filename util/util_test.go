@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 func buildCSVRequest(csvPayload string) (*http.Request, error) {

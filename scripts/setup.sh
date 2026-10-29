@@ -1,5 +1,5 @@
 #!/bin/bash
-# setup.sh — One-command bootstrap for deploying Vantage with Docker Compose.
+# setup.sh — One-command bootstrap for deploying Phish & Discover with Docker Compose.
 #
 # Creates .env from .env.example if missing, fills in the values that have
 # real security consequences if left at their defaults (admin path secret,
@@ -55,8 +55,8 @@ set_env() {
     fi
 }
 
-if [ "${ADMIN_PATH_SECRET:-vantage-ops-secret-777}" = "vantage-ops-secret-777" ]; then
-    NEW_SECRET="vantage-ops-$(random_token 12)"
+if [ "${ADMIN_PATH_SECRET:-phish-ops-secret-777}" = "phish-ops-secret-777" ]; then
+    NEW_SECRET="phish-ops-$(random_token 12)"
     set_env ADMIN_PATH_SECRET "$NEW_SECRET"
     ADMIN_PATH_SECRET="$NEW_SECRET"
     ok "Generated a random ADMIN_PATH_SECRET (the default value is public — anyone who reads this repo knows it)"
@@ -74,13 +74,13 @@ if [ "${ADMIN_DOMAIN:-localhost}" = "localhost" ]; then
     set_env ADMIN_DOMAIN "$ADMIN_DOMAIN_INPUT"
     ADMIN_DOMAIN="$ADMIN_DOMAIN_INPUT"
 fi
-if [ "${CADDY_EMAIL:-admin@vantage.local}" = "admin@vantage.local" ]; then
+if [ "${CADDY_EMAIL:-admin@phish.local}" = "admin@phish.local" ]; then
     read -rp "Contact email for Let's Encrypt (e.g. you@example.com): " EMAIL_INPUT
     [ -n "$EMAIL_INPUT" ] || fail "A contact email is required."
     set_env CADDY_EMAIL "$EMAIL_INPUT"
 fi
-if [ "${MAIL_HOSTNAME:-vantage.local}" = "vantage.local" ]; then
-    warn "MAIL_HOSTNAME/MAIL_DOMAIN are at their default — Postfix will send as 'vantage.local', which most mail servers will reject."
+if [ "${MAIL_HOSTNAME:-phish.local}" = "phish.local" ]; then
+    warn "MAIL_HOSTNAME/MAIL_DOMAIN are at their default — Postfix will send as 'phish.local', which most mail servers will reject."
     read -rp "Mail server hostname for Postfix, must match this VPS's PTR/rDNS record (e.g. mail.example.com), or leave blank to skip: " MAIL_HOSTNAME_INPUT
     if [ -n "$MAIL_HOSTNAME_INPUT" ]; then
         set_env MAIL_HOSTNAME "$MAIL_HOSTNAME_INPUT"
@@ -113,34 +113,34 @@ fi
 info "Building images (this includes compiling the ProjectDiscovery toolchain — can take several minutes the first time)..."
 $COMPOSE build
 
-# vantage-core runs as a non-root user; the bind-mounted ./vantage_data dir is
+# phish-core runs as a non-root user; the bind-mounted ./phish_data dir is
 # created by Docker as root on first run, which makes the container fail with
 # "Permission denied" writing the sqlite db. Pre-create it owned by the same
-# uid:gid the image's 'vantage' user has.
-mkdir -p ./vantage_data
-VANTAGE_UID_GID=$(docker run --rm --entrypoint id ghcr.io/yusufarbc/vantage:latest -u vantage):$(docker run --rm --entrypoint id ghcr.io/yusufarbc/vantage:latest -g vantage)
-chown -R "$VANTAGE_UID_GID" ./vantage_data 2>/dev/null || warn "Could not chown ./vantage_data (not running as root?) — vantage-core may fail to write its database."
+# uid:gid the image's 'phish' user has.
+mkdir -p ./phish_data
+PHISH_UID_GID=$(docker run --rm --entrypoint id ghcr.io/ytalharabaci/phish-and-discover:latest -u phish):$(docker run --rm --entrypoint id ghcr.io/ytalharabaci/phish-and-discover:latest -g phish)
+chown -R "$PHISH_UID_GID" ./phish_data 2>/dev/null || warn "Could not chown ./phish_data (not running as root?) — phish-core may fail to write its database."
 
 info "Starting services..."
 $COMPOSE up -d
 
-info "Waiting for vantage-core to report healthy..."
+info "Waiting for phish-core to report healthy..."
 for _ in $(seq 1 30); do
-    STATUS=$(docker inspect -f '{{.State.Health.Status}}' vantage_core 2>/dev/null || true)
+    STATUS=$(docker inspect -f '{{.State.Health.Status}}' phish_core 2>/dev/null || true)
     if [ "$STATUS" = "healthy" ]; then
         break
     fi
     sleep 5
 done
 if [ "$STATUS" != "healthy" ]; then
-    warn "vantage-core did not report healthy within 150s — check '$COMPOSE logs vantage-core'"
+    warn "phish-core did not report healthy within 150s — check '$COMPOSE logs phish-core'"
 fi
 
 # shellcheck disable=SC1091
 set -a; source .env; set +a
 
 echo
-ok "Vantage is up."
+ok "Phish & Discover is up."
 echo "  URL:      https://${ADMIN_DOMAIN}/${ADMIN_PATH_SECRET}"
 echo "  Username: admin"
 echo "  Password: ${GOPHISH_INITIAL_ADMIN_PASSWORD}"

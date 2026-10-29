@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yusufarbc/vantage/pkg/network"
+	"github.com/ytalharabaci/phish-and-discover/pkg/network"
 )
 
 // defaultStressConcurrency is the connection concurrency used for the

@@ -1,13 +1,13 @@
 // Initialize Toast Container dynamically
-if (!$('#vantage-toast-container').length) {
-    $('body').append('<div id="vantage-toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>');
+if (!$('#phish-toast-container').length) {
+    $('body').append('<div id="phish-toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>');
 }
 
 function showToast(title, message, type = 'success') {
     const icon = type === 'error' ? '🚫' : type === 'warning' ? '⚠️' : '✅';
     const bgClass = type === 'error' ? 'bg-red-900/90 border-red-500' : 
                    type === 'warning' ? 'bg-yellow-800/90 border-yellow-500' : 
-                   'bg-vantage-accent/90 border-green-500';
+                   'bg-phish-accent/90 border-green-500';
     
     const toastId = 'toast-' + Math.random().toString(36).substr(2, 9);
     const toastHtml = `
@@ -21,7 +21,7 @@ function showToast(title, message, type = 'success') {
         </div>
     `;
     
-    $('#vantage-toast-container').append(toastHtml);
+    $('#phish-toast-container').append(toastHtml);
     
     // Slide in
     setTimeout(() => {

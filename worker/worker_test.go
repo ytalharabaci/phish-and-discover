@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yusufarbc/vantage/config"
-	"github.com/yusufarbc/vantage/mailer"
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/config"
+	"github.com/ytalharabaci/phish-and-discover/mailer"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 type logMailer struct {

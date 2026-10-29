@@ -8,10 +8,10 @@ import "net/http"
 
 // Base handles the default path and template execution
 func (as *AdminServer) Base(w http.ResponseWriter, r *http.Request) {
-	// Render the new Vantage Tailwind dashboard
+	// Render the new Discover Tailwind dashboard
 	w.Header().Set("Content-Type", "text/html")
 	params := newTemplateParams(r)
-	getTemplate(w, "vantage_dashboard").ExecuteTemplate(w, "base", params)
+	getTemplate(w, "discover_dashboard").ExecuteTemplate(w, "base", params)
 }
 
 // Campaigns handles the default path and template execution

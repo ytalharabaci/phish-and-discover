@@ -1,7 +1,7 @@
 /*
  * gulpfile.js
  *
- * Description: The Vantage gulpfile
+ * Description: The Phish & Discover gulpfile
  */
 
 var gulp = require('gulp'),
@@ -48,7 +48,7 @@ vendorjs = function () {
 }
 
 scripts = function () {
-    // Vantage app files - non-ES6
+    // Phish & Discover app files - non-ES6
     return gulp.src([
             app_directory + 'autocomplete.js',
             app_directory + 'campaign_results.js',
@@ -59,7 +59,7 @@ scripts = function () {
             app_directory + 'sending_profiles.js',
             app_directory + 'settings.js',
             app_directory + 'templates.js',
-            app_directory + 'vantage.js',
+            app_directory + 'phish.js',
             app_directory + 'users.js',
             app_directory + 'webhooks.js',
             app_directory + 'passwords.js'
@@ -91,7 +91,7 @@ styles = function () {
         .pipe(cleanCSS({
             compatibilty: 'ie9'
         }))
-        .pipe(concat('vantage.css'))
+        .pipe(concat('phish.css'))
         .pipe(gulp.dest(dest_css_directory));
 }
 

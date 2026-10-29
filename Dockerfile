@@ -1,5 +1,5 @@
 # ========================================================================================
-# VANTAGE: Enterprise Multi-Stage Dockerfile
+# PHISH & DISCOVER: Enterprise Multi-Stage Dockerfile
 # Gophish + ProjectDiscovery Tools + Reverse Tunnel Infrastructure
 # Final production image: Minimal Debian with compiled binaries only
 # ========================================================================================
@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # stage keeps building as upstream tools bump their minimum Go version.
 ENV GOPROXY=https://proxy.golang.org,direct CGO_ENABLED=1 GOTOOLCHAIN=auto
 RUN set -eux; \
-    # All required tools for Vantage platform
+    # All required tools for Phish & Discover platform
     go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest; \
     go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest; \
     go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest; \
@@ -43,7 +43,7 @@ RUN set -eux; \
     true
 
 # ========================================================================================
-# STAGE 3: Gophish/Vantage Backend Builder
+# STAGE 3: Phish & Discover Backend Builder
 # ========================================================================================
 FROM golang:1.25-bookworm AS app-builder
 WORKDIR /app
@@ -53,14 +53,14 @@ COPY . .
 RUN CGO_ENABLED=1 GOOS=linux go build \
     -ldflags="-s -w" \
     -trimpath \
-    -o vantage-server .
+    -o phish-server .
 
 # ========================================================================================
 # STAGE 4: Production Runtime
 # ========================================================================================
 FROM debian:bookworm-slim
 
-LABEL maintainer="Vantage Security Platform" \
+LABEL maintainer="Phish & Discover Security Platform" \
       description="Unified Gophish + ProjectDiscovery Security Operations Hub v2.0"
 
 # Install minimal runtime dependencies
@@ -70,30 +70,30 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Create application user with home directory
-RUN groupadd -r vantage && useradd -r -g vantage -d /home/vantage -m vantage
-ENV HOME=/home/vantage
+RUN groupadd -r phish && useradd -r -g phish -d /home/phish -m phish
+ENV HOME=/home/phish
 
-WORKDIR /opt/vantage
+WORKDIR /opt/phish-and-discover
 
 # Copy ProjectDiscovery tools
 COPY --from=pd-tools-builder /go/bin/* /usr/local/bin/
 
-# Copy Vantage application
-COPY --from=app-builder /app/vantage-server /opt/vantage/
-COPY --from=app-builder /app/templates /opt/vantage/templates
-COPY --from=app-builder /app/static /opt/vantage/static
-COPY --from=asset-builder /build/static/js/dist /opt/vantage/static/js/dist
-COPY --from=asset-builder /build/static/css/dist /opt/vantage/static/css/dist
-COPY --from=app-builder /app/db /opt/vantage/migrations
-COPY --from=app-builder /app/config.json /opt/vantage/config.json.example
-COPY --from=app-builder /app/VERSION /opt/vantage/VERSION
-COPY docker/docker-entrypoint.sh /opt/vantage/docker-entrypoint.sh
+# Copy Phish & Discover application
+COPY --from=app-builder /app/phish-server /opt/phish-and-discover/
+COPY --from=app-builder /app/templates /opt/phish-and-discover/templates
+COPY --from=app-builder /app/static /opt/phish-and-discover/static
+COPY --from=asset-builder /build/static/js/dist /opt/phish-and-discover/static/js/dist
+COPY --from=asset-builder /build/static/css/dist /opt/phish-and-discover/static/css/dist
+COPY --from=app-builder /app/db /opt/phish-and-discover/migrations
+COPY --from=app-builder /app/config.json /opt/phish-and-discover/config.json.example
+COPY --from=app-builder /app/VERSION /opt/phish-and-discover/VERSION
+COPY docker/docker-entrypoint.sh /opt/phish-and-discover/docker-entrypoint.sh
 
 # Prepare directories
-RUN mkdir -p /opt/vantage/db /home/vantage/.nuclei-templates /home/vantage/.config && \
-    mkdir -p /home/vantage/.config/subfinder /home/vantage/.config/uncover /home/vantage/.config/asnmap /home/vantage/.config/interactsh-client && \
-    chown -R vantage:vantage /opt/vantage /home/vantage && \
-    chmod +x /opt/vantage/docker-entrypoint.sh /opt/vantage/vantage-server
+RUN mkdir -p /opt/phish-and-discover/db /home/phish/.nuclei-templates /home/phish/.config && \
+    mkdir -p /home/phish/.config/subfinder /home/phish/.config/uncover /home/phish/.config/asnmap /home/phish/.config/interactsh-client && \
+    chown -R phish:phish /opt/phish-and-discover /home/phish && \
+    chmod +x /opt/phish-and-discover/docker-entrypoint.sh /opt/phish-and-discover/phish-server
 
 
 # Set Linux capabilities for network operations
@@ -102,28 +102,28 @@ RUN set -eux; \
     [ -f /usr/local/bin/httpx ] && setcap cap_net_raw=eip /usr/local/bin/httpx || true; \
     [ -f /usr/local/bin/dnsx ] && setcap cap_net_raw=eip /usr/local/bin/dnsx || true; \
     [ -f /usr/local/bin/chisel ] && setcap cap_net_admin=eip /usr/local/bin/chisel || true; \
-    [ -f /opt/vantage/vantage-server ] && setcap cap_net_raw,cap_net_admin=eip /opt/vantage/vantage-server || true
+    [ -f /opt/phish-and-discover/phish-server ] && setcap cap_net_raw,cap_net_admin=eip /opt/phish-and-discover/phish-server || true
 
 # Verify capabilities (non-fatal)
 RUN set -eux; \
     [ -f /usr/local/bin/naabu ] && getcap /usr/local/bin/naabu || true; \
     [ -f /usr/local/bin/httpx ] && getcap /usr/local/bin/httpx || true; \
     [ -f /usr/local/bin/chisel ] && getcap /usr/local/bin/chisel || true; \
-    [ -f /opt/vantage/vantage-server ] && getcap /opt/vantage/vantage-server || true
+    [ -f /opt/phish-and-discover/phish-server ] && getcap /opt/phish-and-discover/phish-server || true
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD curl -f http://localhost:3333/ || exit 1
 
 # Expose ports
-# 3333: Gophish Admin & Vantage Dashboard
+# 3333: Gophish Admin & Phish & Discover Dashboard
 # 80/443: HTTP(S) Phishing Redirector
 # 8080: Chisel Reverse Tunnel Listener
 # 9090: Reverse TUN Server
 EXPOSE 3333 80 443 8080 9090
 
 # Security context
-USER vantage
-ENTRYPOINT ["/opt/vantage/docker-entrypoint.sh"]
-CMD ["./vantage-server"]
+USER phish
+ENTRYPOINT ["/opt/phish-and-discover/docker-entrypoint.sh"]
+CMD ["./phish-server"]
 

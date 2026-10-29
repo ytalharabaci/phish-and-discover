@@ -1,4 +1,4 @@
-name: "Vantage CodeQL config"
+name: "Phish & Discover CodeQL config"
 
 # Exclude third-party / generated code from analysis. These are not our
 # source and their findings (e.g. the bundled CKEditor spellchecker dialogs)

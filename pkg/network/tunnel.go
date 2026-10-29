@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yusufarbc/vantage/logger"
+	"github.com/ytalharabaci/phish-and-discover/logger"
 )
 
 // TunnelManager manages the Chisel server subprocess that accepts reverse

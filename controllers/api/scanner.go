@@ -8,13 +8,13 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
-	"github.com/yusufarbc/vantage/config"
-	ctx "github.com/yusufarbc/vantage/context"
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/models"
-	"github.com/yusufarbc/vantage/notifier"
-	"github.com/yusufarbc/vantage/reporting"
-	"github.com/yusufarbc/vantage/scanner"
+	"github.com/ytalharabaci/phish-and-discover/config"
+	ctx "github.com/ytalharabaci/phish-and-discover/context"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/models"
+	"github.com/ytalharabaci/phish-and-discover/notifier"
+	"github.com/ytalharabaci/phish-and-discover/reporting"
+	"github.com/ytalharabaci/phish-and-discover/scanner"
 	"time"
 )
 
@@ -154,7 +154,7 @@ func (as *Server) ScanStatus(w http.ResponseWriter, r *http.Request) {
 
 // ── Findings API ──────────────────────────────────────────────────────────────
 
-// GetFindings returns all vulnerability findings stored in Vantage.
+// GetFindings returns all vulnerability findings stored in Phish & Discover.
 // Supports filtering by severity and tool.
 // GET /api/scanner/findings?severity=high&tool=nuclei&limit=100
 func (as *Server) GetFindings(w http.ResponseWriter, r *http.Request) {
@@ -247,7 +247,7 @@ func (as *Server) DownloadScanReport(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/pdf")
-	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=vantage_report_%d.pdf", id64))
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=phish_and_discover_report_%d.pdf", id64))
 	w.Header().Set("Content-Length", strconv.Itoa(len(reportBytes)))
 	w.Write(reportBytes)
 }

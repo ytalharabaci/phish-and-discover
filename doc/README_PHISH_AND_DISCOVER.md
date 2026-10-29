@@ -1,11 +1,11 @@
-# Vantage – Gophish Security Operations Hub
+# PHISH & DISCOVER – Gophish Security Operations Hub
 
-**Vantage** is a unified security operations platform that merges **Gophish** (phishing simulation) with **ProjectDiscovery tool suite** (reconnaissance & vulnerability scanning). It provides a single dashboard for managing phishing campaigns alongside automated security assessment workflows.
+**PHISH & DISCOVER** is a unified security operations platform that merges **Gophish** (phishing simulation) with **ProjectDiscovery tool suite** (reconnaissance & vulnerability scanning). It provides a single dashboard for managing phishing campaigns alongside automated security assessment workflows.
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
 │  PHISHING CAMPAIGNS  +  RECON + VULN SCANNING → ONE PLATFORM │
-│                       VANTAGE v2.0                            │
+│                       PHISH & DISCOVER v2.0                            │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -54,7 +54,7 @@
 
 - **Backend**: Go (Gophish + Custom Scanner Engine)
 - **Frontend**: HTML/CSS/JS (Tailwind CSS)
-- **Database**: SQLite (Gophish DB + Vantage findings DB)
+- **Database**: SQLite (Gophish DB + PHISH & DISCOVER findings DB)
 - **Reverse Proxy**: Caddy (TLS, Basic Auth)
 - **Mail**: Postfix (SMTP delivery)
 - **Orchestration**: Docker Compose
@@ -64,7 +64,7 @@
 #### Gophish (Standard)
 - `User`, `Campaign`, `Group`, `Template`, `SMTP`, `Result`, `MailLog`
 
-#### Vantage Extensions
+#### PHISH & DISCOVER Extensions
 - **Scan** – Metadata about each scan execution
   ```
   {id, target, tool_name, mode, status, created_at, updated_at}
@@ -86,8 +86,8 @@
 ### 1. Clone & Configure
 
 ```bash
-git clone https://github.com/your-org/gophish-vantage.git
-cd gophish-vantage
+git clone https://github.com/your-org/gophish-PHISH & DISCOVER.git
+cd gophish-PHISH & DISCOVER
 
 # Copy environment template
 cp .env.example .env
@@ -104,7 +104,7 @@ docker-compose up -d
 
 # Verify services are running
 docker-compose ps
-docker-compose logs -f vantage-core
+docker-compose logs -f phish-core
 ```
 
 ### 3. Access Dashboard
@@ -112,7 +112,7 @@ docker-compose logs -f vantage-core
 ```
 https://gophish.example.com/
 Username: admin
-Password: (from .env VANTAGE_PASSWORD_HASH)
+Password: (from .env PHISH & DISCOVER_PASSWORD_HASH)
 ```
 
 ### 4. Start a Scan
@@ -260,7 +260,7 @@ Get results for a campaign.
 DOMAIN=gophish.example.com
 
 # Basic Auth password hash (generate via: caddy hash-password)
-VANTAGE_PASSWORD_HASH=$2a$14$R9h/cIPz0gi.URNNX3kh2O...
+PHISH & DISCOVER_PASSWORD_HASH=$2a$14$R9h/cIPz0gi.URNNX3kh2O...
 
 # SMTP Relay (optional)
 POSTFIX_RELAYHOST=[smtp.gmail.com]:587
@@ -285,9 +285,9 @@ Example:
 ```
 {$DOMAIN} {
     basicauth /api/* {
-        admin {$VANTAGE_PASSWORD_HASH}
+        admin {$PHISH & DISCOVER_PASSWORD_HASH}
     }
-    reverse_proxy vantage-core:3333
+    reverse_proxy phish-core:3333
 }
 ```
 
@@ -401,7 +401,7 @@ ws.onmessage = (evt) => {
 
 ### Application Logs
 ```bash
-docker-compose logs vantage-core
+docker-compose logs phish-core
 ```
 
 ### Reverse Proxy Logs
@@ -426,11 +426,11 @@ To update PD tools inside the container:
 ```bash
 # Option 1: Rebuild Docker image
 docker-compose down
-docker-compose build --no-cache vantage-core
+docker-compose build --no-cache phish-core
 docker-compose up -d
 
 # Option 2: Exec into container and update
-docker-compose exec vantage-core bash
+docker-compose exec phish-core bash
 go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest
 ```
 
@@ -444,7 +444,7 @@ go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest
 curl http://localhost:3333/api/scanner/status
 
 # Verify PD tools are installed
-docker-compose exec vantage-core which nuclei
+docker-compose exec phish-core which nuclei
 ```
 
 ### WebSocket Connection Failed
@@ -470,16 +470,16 @@ docker-compose logs postfix -f
 ## 📦 Project Structure
 
 ```
-gophish-vantage/
+gophish-PHISH & DISCOVER/
 ├── controllers/
 │   ├── scanner.go            # Scanner engine (WebSocket, CLI wrapper)
 │   ├── api/
 │   │   └── scanner.go        # Scanner API endpoints
 │   └── route.go              # Routes setup
 ├── models/
-│   └── vantage.go            # Scan & Finding models
+│   └── PHISH & DISCOVER.go            # Scan & Finding models
 ├── templates/
-│   └── vantage_dashboard.html # Tailwind dashboard
+│   └── discover_dashboard.html # Tailwind dashboard
 ├── static/                    # Gophish static assets
 ├── docker-compose.yml        # Orchestration
 ├── Dockerfile               # Build image with PD tools
@@ -544,7 +544,7 @@ Contributions welcome! Please:
 ## 📧 Support
 
 For issues, questions, or feature requests:
-- **GitHub Issues**: https://github.com/your-org/gophish-vantage/issues
+- **GitHub Issues**: https://github.com/your-org/gophish-PHISH & DISCOVER/issues
 - **Security**: Please report privately to security@example.com
 
 ---

@@ -16,9 +16,9 @@ import (
 	"time"
 
 	"github.com/jordan-wright/email"
-	log "github.com/yusufarbc/vantage/logger"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
 
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // Pattern for GoPhish emails e.g ?rid=AbC1234

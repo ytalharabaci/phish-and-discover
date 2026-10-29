@@ -1,5 +1,5 @@
 // Package network provides utilities for managing and inspecting network
-// interfaces on the Vantage VPS host, including detection of reverse-tunnel
+// interfaces on the Phish & Discover VPS host, including detection of reverse-tunnel
 // TUN/TAP virtual interfaces created by Chisel or WireGuard agents.
 package network
 

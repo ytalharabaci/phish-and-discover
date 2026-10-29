@@ -3,12 +3,12 @@
     <!-- Header Area -->
     <div class="flex items-center justify-between mb-8">
         <div>
-            <h1 class="text-3xl font-black tracking-tighter text-vantage-text uppercase italic">
+            <h1 class="text-3xl font-black tracking-tighter text-phish-text uppercase italic">
                 Tactical Units
             </h1>
-            <p class="text-base text-vantage-text-dim mt-2 tracking-wide uppercase font-black opacity-60">Organize and manage target personnel groups</p>
+            <p class="text-base text-phish-text-dim mt-2 tracking-wide uppercase font-black opacity-60">Organize and manage target personnel groups</p>
         </div>
-        <button type="button" class="bg-vantage-accent hover:bg-vantage-accent/90 text-slate-900 font-black px-8 py-3.5 rounded-xl text-base transition-all active:scale-95 shadow-xl shadow-vantage-accent/20 flex items-center gap-3 uppercase tracking-widest" data-toggle="modal" data-backdrop="static" data-target="#modal" onclick="edit(-1)">
+        <button type="button" class="bg-phish-accent hover:bg-phish-accent/90 text-slate-900 font-black px-8 py-3.5 rounded-xl text-base transition-all active:scale-95 shadow-xl shadow-phish-accent/20 flex items-center gap-3 uppercase tracking-widest" data-toggle="modal" data-backdrop="static" data-target="#modal" onclick="edit(-1)">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             New Group
         </button>
@@ -17,10 +17,10 @@
     <div id="flashes" class="row"></div>
 
     <!-- Main Content Area -->
-    <div class="glass-card rounded-2xl border border-vantage-border overflow-hidden shadow-2xl">
-        <div class="p-8 border-b border-vantage-border bg-vantage-sidebar/30">
+    <div class="glass-card rounded-2xl border border-phish-border overflow-hidden shadow-2xl">
+        <div class="p-8 border-b border-phish-border bg-phish-sidebar/30">
             <div id="loading" class="flex justify-center p-12">
-                <i class="fa fa-spinner fa-spin fa-3x text-vantage-accent opacity-50"></i>
+                <i class="fa fa-spinner fa-spin fa-3x text-phish-accent opacity-50"></i>
             </div>
             
             <div id="emptyMessage" class="row" style="display:none;">
@@ -32,14 +32,14 @@
             <div class="overflow-x-auto">
                 <table id="groupTable" class="w-full text-left text-lg" style="display:none;">
                     <thead>
-                        <tr class="bg-vantage-sidebar/50 text-vantage-text-dim font-black uppercase tracking-widest text-sm border-b border-vantage-border">
+                        <tr class="bg-phish-sidebar/50 text-phish-text-dim font-black uppercase tracking-widest text-sm border-b border-phish-border">
                             <th class="px-8 py-5">Name</th>
                             <th class="px-8 py-5"># of Members</th>
                             <th class="px-8 py-5">Modified Date</th>
                             <th class="px-8 py-5 text-right no-sort">Operational Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-vantage-border">
+                    <tbody class="divide-y divide-phish-border">
                     </tbody>
                 </table>
             </div>
@@ -49,26 +49,26 @@
 <!-- Modal Modernization -->
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
     <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content glass-card rounded-2xl border border-vantage-border shadow-2xl p-0 overflow-hidden bg-vantage-panel">
-            <div class="modal-header border-b border-vantage-border/30 p-8 flex items-center justify-between bg-vantage-sidebar/30">
+        <div class="modal-content glass-card rounded-2xl border border-phish-border shadow-2xl p-0 overflow-hidden bg-phish-panel">
+            <div class="modal-header border-b border-phish-border/30 p-8 flex items-center justify-between bg-phish-sidebar/30">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-vantage-accent/10 border border-vantage-accent/20 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-vantage-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    <div class="w-12 h-12 rounded-xl bg-phish-accent/10 border border-phish-accent/20 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-phish-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                     </div>
                     <div>
-                        <h4 class="text-2xl font-black text-vantage-text tracking-tighter italic uppercase" id="groupModalLabel">Tactical Unit Assembly</h4>
-                        <p class="text-sm text-vantage-text-dim mt-1 font-black uppercase tracking-widest opacity-60">Defined strategic targeting clusters</p>
+                        <h4 class="text-2xl font-black text-phish-text tracking-tighter italic uppercase" id="groupModalLabel">Tactical Unit Assembly</h4>
+                        <p class="text-sm text-phish-text-dim mt-1 font-black uppercase tracking-widest opacity-60">Defined strategic targeting clusters</p>
                     </div>
                 </div>
-                <button type="button" class="text-vantage-text-dim hover:text-vantage-text transition-colors text-3xl p-2" data-dismiss="modal" aria-label="Close">&times;</button>
+                <button type="button" class="text-phish-text-dim hover:text-phish-text transition-colors text-3xl p-2" data-dismiss="modal" aria-label="Close">&times;</button>
             </div>
             <div class="modal-body p-8 space-y-8" id="modal_body">
                 <div class="row" id="modal.flashes"></div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="space-y-3">
-                        <label class="block text-sm font-black text-vantage-text-dim uppercase tracking-widest" for="name">Unit Identifier</label>
-                        <input type="text" class="w-full bg-vantage-bg/50 border border-vantage-border rounded-xl px-6 py-4 text-base focus:border-vantage-accent outline-none transition-all placeholder:text-vantage-text-dim/20" ng-model="group.name" placeholder="Group name" id="name" autofocus />
+                        <label class="block text-sm font-black text-phish-text-dim uppercase tracking-widest" for="name">Unit Identifier</label>
+                        <input type="text" class="w-full bg-phish-bg/50 border border-phish-border rounded-xl px-6 py-4 text-base focus:border-phish-accent outline-none transition-all placeholder:text-phish-text-dim/20" ng-model="group.name" placeholder="Group name" id="name" autofocus />
                     </div>
                     
                     <div class="flex items-end gap-4">
@@ -79,29 +79,29 @@
                                 <input type="file" id="csvupload" class="absolute inset-0 opacity-0 cursor-pointer" multiple>
                             </span>
                         </div>
-                        <span id="csv-template" class="text-vantage-text-dim hover:text-vantage-accent transition-colors cursor-pointer text-xs font-black uppercase tracking-widest p-4">
+                        <span id="csv-template" class="text-phish-text-dim hover:text-phish-accent transition-colors cursor-pointer text-xs font-black uppercase tracking-widest p-4">
                             <i class="fa fa-file-excel-o mr-2"></i> Download CSV Spec
                         </span>
                     </div>
                 </div>
 
-                <div class="bg-vantage-sidebar/30 p-8 rounded-2xl border border-vantage-border shadow-inner">
-                    <h5 class="text-sm font-black text-vantage-text uppercase tracking-widest mb-6 opacity-80">Manual Entry Interface</h5>
+                <div class="bg-phish-sidebar/30 p-8 rounded-2xl border border-phish-border shadow-inner">
+                    <h5 class="text-sm font-black text-phish-text uppercase tracking-widest mb-6 opacity-80">Manual Entry Interface</h5>
                     <form id="targetForm" class="grid grid-cols-1 md:grid-cols-5 gap-4">
-                        <input type="text" class="w-full bg-vantage-bg/50 border border-vantage-border rounded-xl px-4 py-3 text-sm focus:border-vantage-accent outline-none transition-all" placeholder="First Name" id="firstName">
-                        <input type="text" class="w-full bg-vantage-bg/50 border border-vantage-border rounded-xl px-4 py-3 text-sm focus:border-vantage-accent outline-none transition-all" placeholder="Last Name" id="lastName">
-                        <input type="email" class="w-full bg-vantage-bg/50 border border-vantage-border rounded-xl px-4 py-3 text-sm focus:border-vantage-accent outline-none transition-all" placeholder="Email" id="email" required>
-                        <input type="text" class="w-full bg-vantage-bg/50 border border-vantage-border rounded-xl px-4 py-3 text-sm focus:border-vantage-accent outline-none transition-all" placeholder="Position" id="position">
-                        <button type="submit" class="bg-vantage-accent hover:bg-vantage-accent/90 text-slate-900 font-black px-6 py-3 rounded-xl text-sm transition-all active:scale-95 shadow-lg shadow-vantage-accent/20 uppercase tracking-widest">
+                        <input type="text" class="w-full bg-phish-bg/50 border border-phish-border rounded-xl px-4 py-3 text-sm focus:border-phish-accent outline-none transition-all" placeholder="First Name" id="firstName">
+                        <input type="text" class="w-full bg-phish-bg/50 border border-phish-border rounded-xl px-4 py-3 text-sm focus:border-phish-accent outline-none transition-all" placeholder="Last Name" id="lastName">
+                        <input type="email" class="w-full bg-phish-bg/50 border border-phish-border rounded-xl px-4 py-3 text-sm focus:border-phish-accent outline-none transition-all" placeholder="Email" id="email" required>
+                        <input type="text" class="w-full bg-phish-bg/50 border border-phish-border rounded-xl px-4 py-3 text-sm focus:border-phish-accent outline-none transition-all" placeholder="Position" id="position">
+                        <button type="submit" class="bg-phish-accent hover:bg-phish-accent/90 text-slate-900 font-black px-6 py-3 rounded-xl text-sm transition-all active:scale-95 shadow-lg shadow-phish-accent/20 uppercase tracking-widest">
                             Add Agent
                         </button>
                     </form>
                 </div>
 
-                <div class="overflow-hidden border border-vantage-border rounded-2xl bg-vantage-bg/20">
+                <div class="overflow-hidden border border-phish-border rounded-2xl bg-phish-bg/20">
                     <table id="targetsTable" class="w-full text-left text-sm">
                         <thead>
-                            <tr class="bg-vantage-sidebar/50 text-vantage-text-dim font-black uppercase tracking-widest text-xs border-b border-vantage-border">
+                            <tr class="bg-phish-sidebar/50 text-phish-text-dim font-black uppercase tracking-widest text-xs border-b border-phish-border">
                                 <th class="px-6 py-4">First Name</th>
                                 <th class="px-6 py-4">Last Name</th>
                                 <th class="px-6 py-4">Email</th>
@@ -109,14 +109,14 @@
                                 <th class="px-6 py-4 text-right no-sort">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-vantage-border">
+                        <tbody class="divide-y divide-phish-border">
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="modal-footer p-8 border-t border-vantage-border/30 flex items-center justify-between bg-vantage-sidebar/30">
-                <button type="button" class="px-8 py-3 text-base font-black text-vantage-text-dim hover:text-vantage-text transition-all tracking-widest uppercase" data-dismiss="modal">Abort</button>
-                <button type="button" class="bg-vantage-accent hover:bg-vantage-accent/90 text-slate-900 font-black px-10 py-3.5 rounded-xl text-base transition-all active:scale-95 shadow-xl shadow-vantage-accent/20 uppercase tracking-widest" id="modalSubmit">Authorize Unit</button>
+            <div class="modal-footer p-8 border-t border-phish-border/30 flex items-center justify-between bg-phish-sidebar/30">
+                <button type="button" class="px-8 py-3 text-base font-black text-phish-text-dim hover:text-phish-text transition-all tracking-widest uppercase" data-dismiss="modal">Abort</button>
+                <button type="button" class="bg-phish-accent hover:bg-phish-accent/90 text-slate-900 font-black px-10 py-3.5 rounded-xl text-base transition-all active:scale-95 shadow-xl shadow-phish-accent/20 uppercase tracking-widest" id="modalSubmit">Authorize Unit</button>
             </div>
         </div>
     </div>

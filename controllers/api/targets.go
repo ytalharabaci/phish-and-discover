@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	ctx "github.com/yusufarbc/vantage/context"
-	"github.com/yusufarbc/vantage/models"
+	ctx "github.com/ytalharabaci/phish-and-discover/context"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // ImportTargetsRequest supports mixed input: IP, CIDR, domains, organization names.

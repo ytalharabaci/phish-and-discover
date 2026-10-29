@@ -3,12 +3,12 @@
     <!-- Header Area -->
     <div class="flex items-center justify-between mb-8">
         <div>
-            <h1 class="text-3xl font-black tracking-tighter text-vantage-text uppercase italic">
+            <h1 class="text-3xl font-black tracking-tighter text-phish-text uppercase italic">
                 Email Templates
             </h1>
-            <p class="text-base text-vantage-text-dim mt-2 tracking-wide uppercase font-black opacity-60">Manage and customize your email communication templates</p>
+            <p class="text-base text-phish-text-dim mt-2 tracking-wide uppercase font-black opacity-60">Manage and customize your email communication templates</p>
         </div>
-        <button type="button" class="bg-vantage-accent hover:bg-vantage-accent/90 text-slate-900 font-black px-8 py-3.5 rounded-xl text-base transition-all active:scale-95 shadow-xl shadow-vantage-accent/20 flex items-center gap-3 uppercase tracking-widest" data-toggle="modal" data-backdrop="static" data-target="#modal" onclick="edit(-1)">
+        <button type="button" class="bg-phish-accent hover:bg-phish-accent/90 text-slate-900 font-black px-8 py-3.5 rounded-xl text-base transition-all active:scale-95 shadow-xl shadow-phish-accent/20 flex items-center gap-3 uppercase tracking-widest" data-toggle="modal" data-backdrop="static" data-target="#modal" onclick="edit(-1)">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             New Template
         </button>
@@ -17,10 +17,10 @@
     <div id="flashes" class="row"></div>
 
     <!-- Main Content Area -->
-    <div class="glass-card rounded-2xl border border-vantage-border overflow-hidden shadow-2xl">
-        <div class="p-8 border-b border-vantage-border bg-vantage-sidebar/30">
+    <div class="glass-card rounded-2xl border border-phish-border overflow-hidden shadow-2xl">
+        <div class="p-8 border-b border-phish-border bg-phish-sidebar/30">
             <div id="loading" class="flex justify-center p-12">
-                <i class="fa fa-spinner fa-spin fa-3x text-vantage-accent opacity-50"></i>
+                <i class="fa fa-spinner fa-spin fa-3x text-phish-accent opacity-50"></i>
             </div>
             <div id="emptyMessage" class="row" style="display:none;">
                 <div class="alert alert-info">
@@ -30,13 +30,13 @@
             <div class="overflow-x-auto">
                 <table id="templateTable" class="w-full text-left text-lg" style="display:none;">
                     <thead>
-                        <tr class="bg-vantage-sidebar/50 text-vantage-text-dim font-black uppercase tracking-widest text-sm border-b border-vantage-border">
+                        <tr class="bg-phish-sidebar/50 text-phish-text-dim font-black uppercase tracking-widest text-sm border-b border-phish-border">
                             <th class="px-8 py-5">Name</th>
                             <th class="px-8 py-5">Modified Date</th>
                             <th class="px-8 py-5 text-right no-sort"></th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-vantage-border">
+                    <tbody class="divide-y divide-phish-border">
                     </tbody>
                 </table>
             </div>

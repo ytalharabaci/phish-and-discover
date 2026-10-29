@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	mid "github.com/yusufarbc/vantage/middleware"
-	"github.com/yusufarbc/vantage/middleware/ratelimit"
-	"github.com/yusufarbc/vantage/models"
-	"github.com/yusufarbc/vantage/worker"
+	mid "github.com/ytalharabaci/phish-and-discover/middleware"
+	"github.com/ytalharabaci/phish-and-discover/middleware/ratelimit"
+	"github.com/ytalharabaci/phish-and-discover/models"
+	"github.com/ytalharabaci/phish-and-discover/worker"
 )
 
 // ServerOption is an option to apply to the API server.
@@ -99,7 +99,7 @@ func (as *Server) registerRoutes() {
 	router.HandleFunc("/scanner/stop/{id:[0-9]+}", as.StopScanHandler).Methods("POST")
 	router.HandleFunc("/scanner/stress/start", as.StartStressTest).Methods("POST")
 
-	// ── Vantage v1 API — Network & Tunnel Management ──────────────────────────
+	// ── Discover v1 API — Network & Tunnel Management ──────────────────────────
 	// Versioned subrouter: /api/v1/
 	// Uses the same auth middleware (RequireAPIKey) as the parent router.
 	v1 := root.PathPrefix("/api/v1/").Subrouter()

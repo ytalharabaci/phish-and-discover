@@ -28,14 +28,16 @@ gophish_admin.key
 
 *.exe
 gophish.db*
-vantage.db*
+phish.db*
 /gophish
-/vantage
-/vantage-server
+/phish-server
+/phish-and-discover
+/phish-server
+/phish-and-discover
 
-# Vantage configurations and local databases
+# Phish & Discover configurations and local databases
 .env
-vantage_data/
+phish_data/
 
 # VPS credentials — never commit, this repo is public
 vps.txt

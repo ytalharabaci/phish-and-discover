@@ -13,11 +13,11 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/jordan-wright/email"
-	"github.com/yusufarbc/vantage/config"
-	"github.com/yusufarbc/vantage/dialer"
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/models"
-	"github.com/yusufarbc/vantage/util"
+	"github.com/ytalharabaci/phish-and-discover/config"
+	"github.com/ytalharabaci/phish-and-discover/dialer"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/models"
+	"github.com/ytalharabaci/phish-and-discover/util"
 )
 
 // importSiteTimeout bounds how long ImportSite will wait on a target site

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/jung-kurt/gofpdf"
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // GenerateScanReport produces a professional PDF report for a given scan task.
@@ -32,12 +32,12 @@ func GenerateScanReport(scanID uint, userID int64) ([]byte, error) {
 	pdf.AddPage()
 
 	// --- Header ---
-	pdf.SetFillColor(11, 15, 18) // Vantage Background Color
+	pdf.SetFillColor(11, 15, 18) // Background Color
 	pdf.Rect(0, 0, 210, 40, "F")
 
-	pdf.SetTextColor(94, 207, 136) // Vantage Accent Green
+	pdf.SetTextColor(94, 207, 136) // Accent Green
 	pdf.SetFont("Arial", "B", 24)
-	pdf.CellFormat(0, 15, "VANTAGE SECURITY REPORT", "", 1, "C", false, 0, "")
+	pdf.CellFormat(0, 15, "PHISH & DISCOVER SECURITY REPORT", "", 1, "C", false, 0, "")
 
 	pdf.SetTextColor(200, 200, 200)
 	pdf.SetFont("Arial", "I", 10)
@@ -52,7 +52,7 @@ func GenerateScanReport(scanID uint, userID int64) ([]byte, error) {
 
 	pdf.SetFont("Arial", "", 11)
 	summary := fmt.Sprintf("This document contains the security assessment results for target: %s. "+
-		"The scan was performed using the Vantage Security Hub using various ProjectDiscovery tools. "+
+		"The scan was performed using the Phish & Discover Security Hub using various ProjectDiscovery tools. "+
 		"A total of %d findings were identified during this assessment.", scan.Target, len(findings))
 	pdf.MultiCell(0, 6, summary, "", "", false)
 	pdf.Ln(10)
@@ -167,7 +167,7 @@ func GenerateScanReport(scanID uint, userID int64) ([]byte, error) {
 	pdf.SetY(-20)
 	pdf.SetFont("Arial", "I", 8)
 	pdf.SetTextColor(128, 128, 128)
-	pdf.CellFormat(0, 10, "Vantage Security Hub - Confidential Technical Report - Page "+fmt.Sprintf("%d", pdf.PageNo()), "", 0, "C", false, 0, "")
+	pdf.CellFormat(0, 10, "Phish & Discover Security Hub - Confidential Technical Report - Page "+fmt.Sprintf("%d", pdf.PageNo()), "", 0, "C", false, 0, "")
 
 	var buf bytes.Buffer
 	err = pdf.Output(&buf)

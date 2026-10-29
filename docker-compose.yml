@@ -1,22 +1,22 @@
 # ═════════════════════════════════════════════════════════════════════════════════
-# VANTAGE: Enterprise Security Operations Hub - Docker Compose Orchestration
+# PHISH & DISCOVER: Enterprise Security Operations Hub - Docker Compose Orchestration
 # Gophish + ProjectDiscovery Tools + Postfix + Caddy Reverse Proxy
 # ═════════════════════════════════════════════════════════════════════════════════
 
 services:
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # Core: Vantage Application (Gophish + Scanner Engine)
+  # Core: Phish & Discover Application (Gophish + Scanner Engine)
   # ─────────────────────────────────────────────────────────────────────────────
-  vantage-core:
+  phish-core:
     # 'image' lets the VPS just 'docker compose pull' a prebuilt image from GHCR
     # instead of building from source (slow on HDD-backed VPS — see CI workflow).
     # 'build' is kept so local dev (`docker compose build`) still works without CI.
-    image: ghcr.io/yusufarbc/vantage:latest
+    image: ghcr.io/ytalharabaci/phish-and-discover:latest
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: vantage_core
+    container_name: phish_core
     restart: always
 
     # Linux Capabilities: CRITICAL for network operations
@@ -45,19 +45,19 @@ services:
     # Persistent storage volumes
     volumes:
       # Database persistence (SQLite)
-      - ./vantage_data:/opt/vantage/db
+      - ./phish_data:/opt/phish-and-discover/db
 
       # Nuclei templates caching (avoid re-downloading on restart)
-      - nuclei_templates:/home/vantage/.nuclei-templates
+      - nuclei_templates:/home/phish/.nuclei-templates
 
       # Nuclei configuration
-      - nuclei_config:/home/vantage/.config/nuclei
+      - nuclei_config:/home/phish/.config/nuclei
 
     # Environment configuration
     environment:
       # Database
       - DB_TYPE=sqlite3
-      - DB_PATH=/opt/vantage/db/vantage.db
+      - DB_PATH=/opt/phish-and-discover/db/phish.db
 
       # Gophish Admin
       - GOPHISH_ADMIN_BIND=0.0.0.0:3333
@@ -106,7 +106,7 @@ services:
 
     # Network configuration
     networks:
-      - vantage-net
+      - phish-net
 
     depends_on:
       postfix:
@@ -120,19 +120,19 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-        labels: "service=vantage-core"
+        labels: "service=phish-core"
 
   # ─────────────────────────────────────────────────────────────────────────────
   # Mail: Postfix SMTP Relay (for Gophish phishing email delivery)
   # ─────────────────────────────────────────────────────────────────────────────
   postfix:
     image: mwader/postfix-relay:latest
-    container_name: vantage_postfix
+    container_name: phish_postfix
     restart: always
 
     # Internal network only (no external ports needed)
     networks:
-      - vantage-net
+      - phish-net
 
     # Persist DKIM keys (regenerating them would invalidate the DNS TXT record)
     volumes:
@@ -140,14 +140,14 @@ services:
 
     environment:
       # Postfix hostname — must match the server's PTR/rDNS record for direct sending
-      - POSTFIX_myhostname=${MAIL_HOSTNAME:-vantage.local}
+      - POSTFIX_myhostname=${MAIL_HOSTNAME:-phish.local}
 
-      # Allow vantage-core to relay
+      # Allow phish-core to relay
       - POSTFIX_mynetworks=172.20.0.0/16
 
       # DKIM-sign outgoing mail for this domain (must match the "From" address domain
       # used in Gophish sending profiles). Public key ends up in /etc/opendkim/keys/<domain>/mail.txt
-      - OPENDKIM_DOMAINS=${MAIL_DOMAIN:-vantage.local}
+      - OPENDKIM_DOMAINS=${MAIL_DOMAIN:-phish.local}
       - OPENDKIM_RequireSafeKeys=no
 
     # Resource limits — see CORE_CPU_LIMIT comment above for the override pattern
@@ -178,7 +178,7 @@ services:
   # ─────────────────────────────────────────────────────────────────────────────
   caddy:
     image: caddy:2.7-alpine
-    container_name: vantage_caddy
+    container_name: phish_caddy
     restart: always
 
     # Port mappings using global variables
@@ -200,20 +200,20 @@ services:
       - caddy_config:/config
 
       # Persistent Caddy access and audit logs
-      - ./vantage_data/caddy_logs:/var/log/caddy
+      - ./phish_data/caddy_logs:/var/log/caddy
 
     networks:
-      - vantage-net
+      - phish-net
 
     environment:
-      CADDY_EMAIL: "${CADDY_EMAIL:-admin@vantage.local}"
+      CADDY_EMAIL: "${CADDY_EMAIL:-admin@phish.local}"
       ADMIN_DOMAIN: "${ADMIN_DOMAIN:-localhost}"
       PHISH_DOMAIN: "${DOMAIN:-localhost}"
-      ADMIN_PATH_SECRET: "${ADMIN_PATH_SECRET:-vantage-ops-secret-777}"
+      ADMIN_PATH_SECRET: "${ADMIN_PATH_SECRET:-phish-ops-secret-777}"
       ADMIN_PASS_HASH: "${ADMIN_PASS_HASH:-disabled}"
 
     depends_on:
-      - vantage-core
+      - phish-core
 
     healthcheck:
       test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:2019/config/" ]
@@ -230,15 +230,15 @@ services:
 
   # ─────────────────────────────────────────────────────────────────────────────
   # Docker Socket Proxy: read-only, container-list-only view of the Docker API
-  # for the System Status page. vantage-core never touches /var/run/docker.sock
+  # for the System Status page. phish-core never touches /var/run/docker.sock
   # directly — only this proxy does, and it's locked down to GET /containers/*
   # (CONTAINERS=1, everything else defaults to 0: no exec, no volumes, no images,
-  # no POST of any kind). A compromised vantage-core can read container health,
+  # no POST of any kind). A compromised phish-core can read container health,
   # nothing more — it can't start/stop/exec containers or escape to the host.
   # ─────────────────────────────────────────────────────────────────────────────
   docker-proxy:
     image: tecnativa/docker-socket-proxy:latest
-    container_name: vantage_docker_proxy
+    container_name: phish_docker_proxy
     restart: always
 
     volumes:
@@ -249,7 +249,7 @@ services:
       - POST=0
 
     networks:
-      - vantage-net
+      - phish-net
 
     logging:
       driver: "json-file"
@@ -262,7 +262,7 @@ services:
 # NETWORKS
 # ═════════════════════════════════════════════════════════════════════════════════
 networks:
-  vantage-net:
+  phish-net:
     driver: bridge
     ipam:
       config:

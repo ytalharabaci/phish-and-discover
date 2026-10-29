@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	ctx "github.com/yusufarbc/vantage/context"
-	"github.com/yusufarbc/vantage/imap"
-	"github.com/yusufarbc/vantage/models"
+	ctx "github.com/ytalharabaci/phish-and-discover/context"
+	"github.com/ytalharabaci/phish-and-discover/imap"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // IMAPServerValidate handles requests for the /api/imapserver/validate endpoint

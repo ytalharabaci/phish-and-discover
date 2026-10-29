@@ -1,12 +1,12 @@
 # ═════════════════════════════════════════════════════════════════════════════
-# VANTAGE: Unified Caddy Reverse Proxy Configuration (Dev & Prod)
+# PHISH & DISCOVER: Unified Caddy Reverse Proxy Configuration (Dev & Prod)
 # Handles: TLS termination, Basic Auth, WebSocket, Security headers,
 # and Admin Dashboard Obfuscation (Secret URL Path)
 # ═════════════════════════════════════════════════════════════════════════════
 
 {
     # Global option: contact email for Let's Encrypt certificates
-    email {$CADDY_EMAIL:admin@vantage.local}
+    email {$CADDY_EMAIL:admin@phish.local}
     
     # Keep admin API local
     admin localhost:2019
@@ -33,7 +33,7 @@
     # Referrer policy
     header Referrer-Policy "strict-origin-when-cross-origin"
     
-    # Content Security Policy (adjusted for Vantage UI requirements)
+    # Content Security Policy (adjusted for Phish & Discover UI requirements)
     header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' ws: wss:;"
 
     # HSTS (HTTP Strict Transport Security)
@@ -50,9 +50,9 @@
     import security_headers
     
     # 🔐 Admin Obfuscation Entrance
-    # Visiting this URL sets a 30-day vantage_access cookie and redirects to Gophish Admin UI
+    # Visiting this URL sets a 30-day phish_access cookie and redirects to Gophish Admin UI
     route /{$ADMIN_PATH_SECRET} {
-        header +Set-Cookie "vantage_access=authorized; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax"
+        header +Set-Cookie "phish_access=authorized; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax"
         redir * /
     }
 
@@ -61,7 +61,7 @@
     route {
         @unauthorized {
             not path /{$ADMIN_PATH_SECRET}*
-            not header Cookie *vantage_access=authorized*
+            not header Cookie *phish_access=authorized*
         }
         # Returns a generic 404 to hide the server's identity from scanners and bots
         respond @unauthorized "Not Found" 404
@@ -72,10 +72,10 @@
     # Generate bcrypt hash: docker run --rm caddy caddy hash-password -plaintext "mysecret"
     @has_auth expression {env.ADMIN_PASS_HASH} != "disabled"
     basicauth @has_auth {
-        vantage-admin {$ADMIN_PASS_HASH}
+        phish-admin {$ADMIN_PASS_HASH}
     }
     
-    reverse_proxy vantage-core:3333 {
+    reverse_proxy phish-core:3333 {
         header_up Host {host}
         header_up X-Real-IP {remote_host}
         header_up X-Forwarded-For {remote_host}
@@ -100,7 +100,7 @@
     import security_headers
     
     # No Authentication - Public Facing
-    reverse_proxy vantage-core:8080 {
+    reverse_proxy phish-core:8080 {
         header_up Host {host}
         header_up X-Real-IP {remote_host}
         header_up X-Forwarded-For {remote_host}

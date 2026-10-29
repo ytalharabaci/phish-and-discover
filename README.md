@@ -1,16 +1,16 @@
-# Vantage (Gophish Security Operations Hub)
+# Phish & Discover (Gophish Security Operations Hub)
 
-**Vantage** is an advanced fork of **Gophish**, transformed into a unified Security Operations Hub. It acts as a powerful, asynchronous Go-based CLI wrapper and orchestrator for **ProjectDiscovery** tools, allowing security teams to manage phishing simulations alongside automated network scanning.
+**Phish & Discover** is an advanced fork of **Gophish**, transformed into a unified Security Operations Hub. It acts as a powerful, asynchronous Go-based CLI wrapper and orchestrator for **ProjectDiscovery** tools, allowing security teams to manage phishing simulations alongside automated network scanning.
 
 ---
 
 ## 🖼️ Screenshots
 
 ### Unified Security Ops Dashboard
-![Vantage Dashboard](vantage-dashboard.JPG)
+![Phish & Discover Dashboard](dashboard.jpg)
 
 ### Enterprise Docker Stack & Reverse Tunneling
-![Vantage Docker Architecture](vantage-docker.JPG)
+![Phish & Discover Docker Architecture](docker.jpg)
 
 ---
 
@@ -28,7 +28,7 @@
 
 For detailed setup and usage instructions, please refer to the following guides:
 
-*   📖 **[Vantage Overview & API Reference](doc/README_VANTAGE.md)** - Main project documentation.
+*   📖 **[Phish & Discover Overview & API Reference](doc/README_PHISH_AND_DISCOVER.md)** - Main project documentation.
 *   🏗️ **[Architecture](doc/ARCHITECTURE.md)** - Scanner engine design and where things live.
 *   🚀 **[Deployment & Operations Guide](doc/DEPLOYMENT_GUIDE.md)** - Step-by-step VPS/Server deployment.
 *   🌐 **[Reverse L3 Tunnel Guide](doc/REVERSE_TUNNEL_GUIDE.md)** - **[NEW]** Setup and usage for internal scanning.
@@ -36,10 +36,10 @@ For detailed setup and usage instructions, please refer to the following guides:
 
 ## 🌐 Platform Architecture (Phishing & Scanning Workflows)
 
-Vantage operates from a **VPS with a Static IP bound to a domain via DNS records** (essential for phishing/oltalama delivery). It supports three main workflows:
+Phish & Discover operates from a **VPS with a Static IP bound to a domain via DNS records** (essential for phishing/oltalama delivery). It supports three main workflows:
 
 1. **External Scanning (Direct from VPS)**: Scans public internet assets directly from the VPS.
-2. **Internal Scanning (Compromised Endpoint Simulation)**: Scans are routed from the VPS through a secure Chisel reverse tunnel (`tun0`) to the Vantage Agent running on a compromised endpoint inside the corporate network.
+2. **Internal Scanning (Compromised Endpoint Simulation)**: Scans are routed from the VPS through a secure Chisel reverse tunnel (`tun0`) to the Phish & Discover Agent running on a compromised endpoint inside the corporate network.
 3. **Phishing Simulation**: Sends oltalama emails from the VPS to corporate users via Postfix SMTP, driving engagement tracking back to the dashboard.
 
 ```mermaid
@@ -50,8 +50,8 @@ graph TD
     classDef internal fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d;
 
     %% Nodes & Subgraphs
-    subgraph VPS ["Vantage VPS (Cloud Deployment)"]
-        Vantage["Vantage Hub Core<br>(Scanner & Phishing Engine)"]:::vps
+    subgraph VPS ["Phish & Discover VPS (Cloud Deployment)"]
+        Core["Phish & Discover Hub Core<br>(Scanner & Phishing Engine)"]:::vps
         SMTP["Postfix SMTP Container"]:::vps
     end
 
@@ -60,7 +60,7 @@ graph TD
     end
 
     subgraph Corporate ["Corporate Network (Internal Zone)"]
-        Agent["Vantage Chisel Agent<br>(Compromised Endpoint Sim.)"]:::internal
+        Agent["Phish & Discover Agent<br>(Compromised Endpoint Sim.)"]:::internal
         IntAssets["Internal Corporate Assets<br>(Active Directory, Local Servers)"]:::internal
         Users["Corporate Users<br>(Phishing Targets)"]:::internal
     end
@@ -68,16 +68,16 @@ graph TD
     %% Workflows
     
     %% 1. External Scanning
-    Vantage -->|1. Direct External Scan| ExtAssets
+    Core -->|1. Direct External Scan| ExtAssets
     
     %% 2. Internal Scanning (Compromised Endpoint Simulation)
-    Vantage <-->|2a. Reverse Chisel Tunnel| Agent
+    Core <-->|2a. Reverse Chisel Tunnel| Agent
     Agent -->|2b. Local Subnet Scan| IntAssets
 
     %% 3. Phishing Simulation
-    Vantage -->|3a. Trigger Email Campaign| SMTP
+    Core -->|3a. Trigger Email Campaign| SMTP
     SMTP -->|3b. Phishing Emails via SMTP| Users
-    Users -.->|3c. Phishing Interactions via HTTPS| Vantage
+    Users -.->|3c. Phishing Interactions via HTTPS| Core
 
     %% Group styling
     style VPS fill:#f8fafc,stroke:#cbd5e1,stroke-width:2px
@@ -90,11 +90,11 @@ graph TD
 ## 🏗️ Quick Start
 
 ```bash
-git clone https://github.com/yusufarbc/vantage.git
-cd vantage
+git clone https://github.com/ytalharabaci/phish-and-discover.git
+cd phish-and-discover
 cp .env.example .env
 # Edit .env and start
-docker-compose up -d
+docker compose up -d
 ```
 
 Access your dashboard at `https://yourdomain.com/` (as configured in `.env`).
@@ -103,9 +103,9 @@ Access your dashboard at `https://yourdomain.com/` (as configured in `.env`).
 
 ## 🍴 Fork Notice
 
-Vantage is a fork of [Gophish](https://github.com/gophish/gophish) by Jordan Wright, extended
+Phish & Discover is a fork of [Gophish](https://github.com/gophish/gophish) by Jordan Wright, extended
 with a ProjectDiscovery-based scanning engine and reverse-tunnel infrastructure. Gophish's
-original MIT copyright notice is preserved in [LICENSE](./LICENSE) alongside Vantage's own.
+original MIT copyright notice is preserved in [LICENSE](./LICENSE) alongside Phish & Discover's own.
 
 ## ⚖️ License
 

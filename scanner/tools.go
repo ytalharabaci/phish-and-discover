@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // ── Phase 1a: OSINT — Passive Subdomain Enumeration ──────────────────────────

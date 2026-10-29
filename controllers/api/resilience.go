@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/yusufarbc/vantage/models"
-	"github.com/yusufarbc/vantage/scanner"
+	"github.com/ytalharabaci/phish-and-discover/models"
+	"github.com/ytalharabaci/phish-and-discover/scanner"
 )
 
 type StressStartRequest struct {

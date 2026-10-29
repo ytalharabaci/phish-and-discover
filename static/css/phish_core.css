@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   Vantage Core Premium Design System v2.1
+   Phish & Discover Core Premium Design System v2.1
    ═══════════════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
@@ -18,7 +18,7 @@
     --v-text-dim: #64748b;
     --v-header-bg: rgba(255, 255, 255, 0.85);
     --v-input-bg: #f8fafc;
-    --font-vantage: 'Outfit', 'Inter', sans-serif;
+    --font-phish: 'Outfit', 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
     --shadow-premium: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
     --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -65,7 +65,7 @@ html {
 }
 
 body {
-    font-family: var(--font-vantage);
+    font-family: var(--font-phish);
     background-color: var(--v-bg);
     color: var(--v-text);
     font-size: 1.125rem;
@@ -80,7 +80,7 @@ main {
 code, .font-mono { font-family: var(--font-mono); }
 
 table, h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-vantage) !important;
+    font-family: var(--font-phish) !important;
 }
 
 .table, table { font-size: 1.125rem !important; }
@@ -405,7 +405,7 @@ h3 { font-size: 1.5rem !important; }
 /* ═══════════════════════════════════════════════════════════════
    UTILITIES
    ═══════════════════════════════════════════════════════════════ */
-.vantage-grid { display: grid; gap: 1.5rem; }
+.phish-grid { display: grid; gap: 1.5rem; }
 
 button {
     transition: all 0.2s ease;
