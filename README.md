@@ -4,16 +4,6 @@
 
 ---
 
-## 🖼️ Screenshots
-
-### Unified Security Ops Dashboard
-![Phish & Discover Dashboard](dashboard.jpg)
-
-### Enterprise Docker Stack & Reverse Tunneling
-![Phish & Discover Docker Architecture](docker.jpg)
-
----
-
 ## 🚀 Key Features
 
 *   **Unified Dashboard**: Manage phishing campaigns and security scans from a single modern UI.
