@@ -1,4 +1,4 @@
-# Vantage Deployment & Operations Guide
+# PHISH & DISCOVER Deployment & Operations Guide
 
 ## ⚡ Quick Start (Recommended)
 
@@ -6,8 +6,8 @@ Once Docker is installed (see Step 1) and DNS points at your server (Step 2):
 
 ```bash
 cd /opt
-sudo git clone https://github.com/yusufarbc/vantage.git
-sudo chown -R $USER:$USER vantage && cd vantage
+sudo git clone https://github.com/ytalharabaci/phish-and-discover.git
+sudo chown -R $USER:$USER PHISH & DISCOVER && cd PHISH & DISCOVER
 ./scripts/setup.sh
 ```
 
@@ -17,7 +17,7 @@ an optional Basic Auth password, and optional direct-mail-sending settings (`MAI
 password, then runs `docker compose build && up -d` and prints the login URL/credentials when
 done. Re-running it is safe — it only fills in values still left at their `.env.example` default.
 
-Vantage always runs targeting a real domain/VPS deployment — there is no separate "test mode";
+PHISH & DISCOVER always runs targeting a real domain/VPS deployment — there is no separate "test mode";
 all configuration happens through `.env` (see [.env.example](../.env.example)).
 
 The rest of this guide covers the same steps manually, plus day-2 operations.
@@ -81,14 +81,14 @@ hyphen) — that's what `docker-compose-plugin` installs above.
 
 ### Step 2: Configure DNS
 
-This is the complete list of every DNS (and rDNS) record Vantage needs. Set them all up front —
+This is the complete list of every DNS (and rDNS) record PHISH & DISCOVER needs. Set them all up front —
 the **App** records are always required; the **Mail** records only apply if you plan to send
 phishing email directly from this server instead of through an external SMTP relay
 (Gmail/SendGrid/etc.).
 
 #### App records (always required)
 
-Vantage uses **two** domain roles, set independently in `.env` ([.env.example](../.env.example)):
+PHISH & DISCOVER uses **two** domain roles, set independently in `.env` ([.env.example](../.env.example)):
 - `ADMIN_DOMAIN` — the Gophish admin dashboard/API, hidden behind the `ADMIN_PATH_SECRET` path.
 - `DOMAIN` (mapped to `PHISH_DOMAIN` in Caddy) — public-facing phishing/landing pages, no auth.
 
@@ -124,8 +124,8 @@ including how to fetch the DKIM value, is in **Step 6.5: Mail (Direct Sending)**
 
 ```bash
 cd /opt
-sudo git clone https://github.com/yusufarbc/vantage.git
-cd vantage
+sudo git clone https://github.com/ytalharabaci/phish-and-discover.git
+cd PHISH & DISCOVER
 
 # Set proper permissions
 sudo chown -R $USER:$USER .
@@ -166,7 +166,7 @@ MAIL_HOSTNAME=mail.example.com
 MAIL_DOMAIN=example.com
 ```
 
-> Vantage doesn't ship a built-in Tailscale sidecar — `docker-compose.yml` has no Tailscale
+> PHISH & DISCOVER doesn't ship a built-in Tailscale sidecar — `docker-compose.yml` has no Tailscale
 > service to uncomment. If you need VPN-reachable internal scanning, use the Chisel-based
 > reverse tunnel that's already built in (Step 8 below / [REVERSE_TUNNEL_GUIDE.md](REVERSE_TUNNEL_GUIDE.md)),
 > or add your own Tailscale sidecar container.
@@ -185,9 +185,9 @@ sleep 10
 docker compose ps
 
 # Expected output:
-# vantage_core    running (healthy)
-# vantage_postfix running
-# vantage_caddy   running
+# phish_core    running (healthy)
+# phish_postfix running
+# phish_caddy   running
 ```
 
 ### Step 6.5: Mail (Direct Sending)
@@ -230,15 +230,15 @@ request that doesn't carry the cookie set by that path). To log in:
 1. Visit `https://admin.example.com/<ADMIN_PATH_SECRET>` (value from your `.env`) once in a
    browser — this sets a 30-day cookie and redirects you to `/`.
 2. If `ADMIN_PASS_HASH` is set (Step 4), the browser will also prompt for **Caddy** Basic Auth:
-   username is the fixed `vantage-admin` (not `admin` — set in `Caddyfile`), password is what
+   username is the fixed `phish-admin` (not `admin` — set in `Caddyfile`), password is what
    you hashed.
 3. You'll land on the Gophish login page. Username: `admin`. Password: the
    `GOPHISH_INITIAL_ADMIN_PASSWORD` value `setup.sh` printed at the end (or
-   `docker compose logs vantage-core | grep -i password` if you set it up manually).
+   `docker compose logs phish-core | grep -i password` if you set it up manually).
 
 ### Step 8: Reverse Tunnel Configuration (Optional)
 
-Vantage includes a built-in Chisel-based reverse tunnel server on port **9090**.
+PHISH & DISCOVER includes a built-in Chisel-based reverse tunnel server on port **9090**.
 
 1. **Verify exposure**: Port `9090` (`HOST_CHISEL_PORT`) must be reachable for reverse agents,
    or use option 2 to tunnel it through Caddy on 443 instead.
@@ -253,16 +253,16 @@ Vantage includes a built-in Chisel-based reverse tunnel server on port **9090**.
        route {
            @unauthorized {
                not path /{$ADMIN_PATH_SECRET}* /chisel/*
-               not header Cookie *vantage_access=authorized*
+               not header Cookie *phish_access=authorized*
            }
            respond @unauthorized "Not Found" 404
        }
 
        handle /chisel/* {
-           reverse_proxy vantage-core:9090
+           reverse_proxy phish-core:9090
        }
 
-       reverse_proxy vantage-core:3333 {
+       reverse_proxy phish-core:3333 {
            # ... existing headers
        }
    }
@@ -287,11 +287,11 @@ password from the generated one (Gophish prompts for this on first login).
 
 ### 2. Create SMTP Profile (for phishing emails)
 
-Via UI, or via API once you have the `vantage_access` cookie (see Step 7) and the Gophish API
+Via UI, or via API once you have the `phish_access` cookie (see Step 7) and the Gophish API
 key (Settings → API Key in the dashboard):
 ```bash
 curl -X POST https://admin.example.com/api/smtp/ \
-  -b "vantage_access=authorized" \
+  -b "phish_access=authorized" \
   -H "Content-Type: application/json" \
   -H "X-API-KEY: your-gophish-api-key" \
   -d '{
@@ -332,9 +332,9 @@ curl -I https://admin.example.com/ -k
 
 # With the secret path it redirects, and 401s if ADMIN_PASS_HASH (Caddy Basic Auth) is set
 curl -I https://admin.example.com/<ADMIN_PATH_SECRET> -k
-# Expected: 302 redirect to / (plus Set-Cookie: vantage_access=authorized)
+# Expected: 302 redirect to / (plus Set-Cookie: phish_access=authorized)
 
-# Check scanner connectivity (bypasses Caddy — talks to vantage-core directly on the VPS)
+# Check scanner connectivity (bypasses Caddy — talks to phish-core directly on the VPS)
 curl http://localhost:3333/api/scanner/status \
   -H "X-API-KEY: your-api-key"
 # Expected: {"running":false}
@@ -347,26 +347,26 @@ curl http://localhost:3333/api/scanner/status \
 docker compose logs -f
 
 # Specific service logs
-docker compose logs -f vantage-core
+docker compose logs -f phish-core
 docker compose logs -f caddy --tail=50
 docker compose logs -f postfix
 
 # Date-filtered logs
-docker compose logs --since 2026-04-07T10:30:00 vantage-core
+docker compose logs --since 2026-04-07T10:30:00 phish-core
 ```
 
 ### Database Backup
 
 ```bash
 # Backup Gophish database
-docker compose exec vantage-core cp /opt/vantage/db/vantage.db /opt/vantage/db/vantage-backup-$(date +%Y%m%d-%H%M%S).db
+docker compose exec phish-core cp /opt/phish-and-discover/db/phish.db /opt/phish-and-discover/db/PHISH & DISCOVER-backup-$(date +%Y%m%d-%H%M%S).db
 
 # Copy from container to host
-docker cp vantage_core:/opt/vantage/db/vantage.db ./backup/vantage-$(date +%Y%m%d).db
+docker cp phish_core:/opt/phish-and-discover/db/phish.db ./backup/PHISH & DISCOVER-$(date +%Y%m%d).db
 
 # Restore (if needed)
 docker compose down
-docker cp ./backup/vantage-2026-04-07.db vantage_core:/opt/vantage/db/vantage.db
+docker cp ./backup/PHISH & DISCOVER-2026-04-07.db phish_core:/opt/phish-and-discover/db/phish.db
 docker compose up -d
 ```
 
@@ -377,7 +377,7 @@ docker compose up -d
 crontab -e
 
 # Add line:
-0 2 * * * cd /opt/vantage && docker compose exec -T vantage-core cp /opt/vantage/db/vantage.db ./backups/vantage-$(date +\%Y\%m\%d).db
+0 2 * * * cd /opt/phish-and-discover && docker compose exec -T phish-core cp /opt/phish-and-discover/db/phish.db ./backups/PHISH & DISCOVER-$(date +\%Y\%m\%d).db
 ```
 
 ---
@@ -395,14 +395,14 @@ crontab -e
 ### Start a Scan via API
 
 All examples below go through the public `admin.example.com` domain, so they need the WAF
-cookie from Step 7 (`-b "vantage_access=authorized"`); add `-u vantage-admin:your-caddy-password`
+cookie from Step 7 (`-b "phish_access=authorized"`); add `-u phish-admin:your-caddy-password`
 too if `ADMIN_PASS_HASH` is set. Running from the VPS itself, you can skip both and hit
 `http://localhost:3333/...` directly instead, as in the Health Checks example above.
 
 ```bash
 # Single tool scan
 curl -X POST https://admin.example.com/api/scanner/start \
-  -b "vantage_access=authorized" \
+  -b "phish_access=authorized" \
   -H "Content-Type: application/json" \
   -H "X-API-KEY: your-api-key" \
   -d '{
@@ -413,7 +413,7 @@ curl -X POST https://admin.example.com/api/scanner/start \
 
 # Discovery mode (full chain)
 curl -X POST https://admin.example.com/api/scanner/start \
-  -b "vantage_access=authorized" \
+  -b "phish_access=authorized" \
   -H "Content-Type: application/json" \
   -H "X-API-KEY: your-api-key" \
   -d '{
@@ -427,17 +427,17 @@ curl -X POST https://admin.example.com/api/scanner/start \
 ```bash
 # All findings
 curl https://admin.example.com/api/scanner/findings \
-  -b "vantage_access=authorized" \
+  -b "phish_access=authorized" \
   -H "X-API-KEY: your-api-key"
 
 # Critical findings only
 curl 'https://admin.example.com/api/scanner/findings?severity=critical' \
-  -b "vantage_access=authorized" \
+  -b "phish_access=authorized" \
   -H "X-API-KEY: your-api-key"
 
 # Filter by tool and limit
 curl 'https://admin.example.com/api/scanner/findings?tool=nuclei&severity=high&limit=10' \
-  -b "vantage_access=authorized" \
+  -b "phish_access=authorized" \
   -H "X-API-KEY: your-api-key"
 ```
 
@@ -447,7 +447,7 @@ curl 'https://admin.example.com/api/scanner/findings?tool=nuclei&severity=high&l
 
 There's no built-in Tailscale sidecar to "uncomment" — `docker-compose.yml` doesn't ship one.
 The supported way to reach internal/NATed networks is the Chisel-based reverse tunnel that's
-already wired into `vantage-core` (Step 8 above): an agent on the internal network connects
+already wired into `phish-core` (Step 8 above): an agent on the internal network connects
 out to your VPS, a `tun0` interface appears, and you route internal CIDRs (`10.0.0.0/8`,
 `172.16.0.0/12`, etc.) through it. Full walkthrough: [REVERSE_TUNNEL_GUIDE.md](REVERSE_TUNNEL_GUIDE.md).
 
@@ -464,7 +464,7 @@ EOF
 # Scan each domain with Nuclei
 for domain in $(cat domains.txt); do
   curl -X POST https://admin.example.com/api/scanner/start \
-    -b "vantage_access=authorized" \
+    -b "phish_access=authorized" \
     -H "Content-Type: application/json" \
     -H "X-API-KEY: your-api-key" \
     -d '{
@@ -480,7 +480,7 @@ done
 ```bash
 # Query findings as JSON, convert to CSV
 curl https://admin.example.com/api/scanner/findings \
-  -b "vantage_access=authorized" \
+  -b "phish_access=authorized" \
   -H "X-API-KEY: your-api-key" | \
   jq -r '.[] | [.severity, .tool_name, .name, .target] | @csv' > findings.csv
 ```
@@ -501,7 +501,7 @@ curl https://admin.example.com/api/scanner/findings \
   (`workflow_dispatch`) rather than building on the VPS itself. Without CI/CD, build locally on
   the VPS:
   ```bash
-  docker compose build --no-cache vantage-core && docker compose up -d
+  docker compose build --no-cache phish-core && docker compose up -d
   ```
 
 #### Monthly
@@ -520,16 +520,16 @@ curl https://admin.example.com/api/scanner/findings \
 **Scan Stuck/Frozen:**
 ```bash
 # Check status
-docker compose exec vantage-core curl http://localhost:3333/api/scanner/status
+docker compose exec phish-core curl http://localhost:3333/api/scanner/status
 
 # If running=true but appears hung, restart:
-docker compose restart vantage-core
+docker compose restart phish-core
 ```
 
 **High Memory Usage:**
 ```bash
 # Monitor memory
-docker stats vantage_core
+docker stats phish_core
 
 # Limit memory in docker-compose.yml:
 deploy:
@@ -569,19 +569,19 @@ provider, a missing/mismatched PTR record, or no SPF/DKIM record yet.
 #!/bin/bash
 # Generate markdown report
 
-echo "# Vantage Security Report - $(date +%Y-%m-%d)"
+echo "# PHISH & DISCOVER Security Report - $(date +%Y-%m-%d)"
 echo ""
 
 # Stats
 curl -s https://admin.example.com/api/scanner/stats \
-  -b "vantage_access=authorized" \
+  -b "phish_access=authorized" \
   -H "X-API-KEY: $API_KEY" | \
   jq 'to_entries | .[] | "- \(.key): \(.value)"'
 
 echo ""
 echo "## Critical Findings"
 curl -s "https://admin.example.com/api/scanner/findings?severity=critical" \
-  -b "vantage_access=authorized" \
+  -b "phish_access=authorized" \
   -H "X-API-KEY: $API_KEY" | \
   jq '.[] | "- [\(.name)](\(.target)) - \(.detail)"'
 ```
@@ -632,13 +632,13 @@ docker compose logs caddy
 
 ```bash
 # Verify tools are installed
-docker compose exec vantage-core which nuclei subfinder httpx
+docker compose exec phish-core which nuclei subfinder httpx
 
 # If missing: binaries are baked in at build time, not installable at runtime.
 # With CI/CD (image pulled from GHCR): re-run the GitHub Actions workflow, then on the VPS:
-docker compose pull vantage-core && docker compose up -d
+docker compose pull phish-core && docker compose up -d
 # Without CI/CD (building locally on the VPS):
-docker compose build --no-cache vantage-core && docker compose up -d
+docker compose build --no-cache phish-core && docker compose up -d
 
 # Check scanner status
 curl http://localhost:3333/api/scanner/status
@@ -654,7 +654,7 @@ docker compose logs postfix
 docker compose exec postfix postqueue -p
 
 # Test SMTP connectivity (the runtime image has no telnet; use bash's /dev/tcp instead)
-docker compose exec vantage-core bash -c 'exec 3<>/dev/tcp/postfix/25 && cat <&3'
+docker compose exec phish-core bash -c 'exec 3<>/dev/tcp/postfix/25 && cat <&3'
 ```
 
 ### Issue: WebSocket Connection Failed
@@ -670,7 +670,7 @@ cause — Cloudflare supports WebSocket but adds another hop that can interfere;
 record to DNS only (see Step 2) to rule it out.
 
 ### Issue: Basic Auth Not Working
-- The Caddy Basic Auth username is the fixed `vantage-admin` (set in `Caddyfile`), not `admin` —
+- The Caddy Basic Auth username is the fixed `phish-admin` (set in `Caddyfile`), not `admin` —
   that's the separate Gophish login.
 - Regenerate password hash:
   ```bash
@@ -680,7 +680,7 @@ record to DNS only (see Step 2) to rule it out.
 - Restart Caddy: `docker compose restart caddy`
 
 ### Issue: Reverse Tunnel (tun0) Not Appearing
-- Ensure Vantage container has `cap_add: NET_ADMIN, NET_RAW` and `/dev/net/tun` device mapped
+- Ensure PHISH & DISCOVER container has `cap_add: NET_ADMIN, NET_RAW` and `/dev/net/tun` device mapped
   (already set in `docker-compose.yml`; don't remove them).
 - Restart: `docker compose up -d --force-recreate`.
 - Check if Chisel server is started in the Dashboard (Scanner tab).

@@ -223,7 +223,7 @@ window.setFieldError = function (fieldId, message) {
     if (!field) return;
 
     field.classList.add('border-red-500', 'bg-red-950/20');
-    field.classList.remove('border-vantage-border');
+    field.classList.remove('border-phish-border');
 
     let errorEl = field.parentElement?.querySelector('.field-error');
     if (!errorEl) {
@@ -240,7 +240,7 @@ window.clearFieldError = function (fieldId) {
     if (!field) return;
 
     field.classList.remove('border-red-500', 'bg-red-950/20');
-    field.classList.add('border-vantage-border');
+    field.classList.add('border-phish-border');
 
     const errorEl = field.parentElement?.querySelector('.field-error');
     if (errorEl) errorEl.remove();
@@ -251,7 +251,7 @@ window.setFieldSuccess = function (fieldId) {
     if (!field) return;
 
     field.classList.add('border-emerald-600', 'bg-emerald-950/20');
-    field.classList.remove('border-vantage-border', 'border-red-500', 'bg-red-950/20');
+    field.classList.remove('border-phish-border', 'border-red-500', 'bg-red-950/20');
 
     // Remove error element if present
     field.parentElement?.querySelector('.field-error')?.remove();

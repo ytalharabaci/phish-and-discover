@@ -3,24 +3,24 @@ package worker
 import (
 	"time"
 
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/models"
-	"github.com/yusufarbc/vantage/scanner"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/models"
+	"github.com/ytalharabaci/phish-and-discover/scanner"
 )
 
-// VantageWorker handles periodic tasks specific to the Vantage Security Hub.
+// DiscoverWorker handles periodic tasks specific to the Phish & Discover Hub.
 // Primarily, it manages the execution of scheduled vulnerability scans.
-type VantageWorker struct{}
+type DiscoverWorker struct{}
 
-// NewVantageWorker returns a new instance of the VantageWorker.
-func NewVantageWorker() *VantageWorker {
-	return &VantageWorker{}
+// NewDiscoverWorker returns a new instance of the DiscoverWorker.
+func NewDiscoverWorker() *DiscoverWorker {
+	return &DiscoverWorker{}
 }
 
 // Start launches the background worker loop.
 // It checks for scheduled tasks every 30 seconds.
-func (vw *VantageWorker) Start() {
-	log.Info("Vantage Background Worker Started - Monitoring Scheduled Scans")
+func (vw *DiscoverWorker) Start() {
+	log.Info("Discover Background Worker Started - Monitoring Scheduled Scans")
 
 	// Check every 30 seconds for scheduled scans
 	ticker := time.NewTicker(30 * time.Second)
@@ -32,7 +32,7 @@ func (vw *VantageWorker) Start() {
 }
 
 // processScheduledScans queries the database for scans that are ready to run.
-func (vw *VantageWorker) processScheduledScans() {
+func (vw *DiscoverWorker) processScheduledScans() {
 	now := time.Now().UTC()
 	scans, err := models.GetScheduledScanTasks(now)
 	if err != nil {

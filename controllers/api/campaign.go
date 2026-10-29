@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	ctx "github.com/yusufarbc/vantage/context"
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/models"
+	ctx "github.com/ytalharabaci/phish-and-discover/context"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // Campaigns returns a list of campaigns if requested via GET.

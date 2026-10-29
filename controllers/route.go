@@ -1,5 +1,5 @@
 // Package controllers implements the admin web server: route registration,
-// middleware wiring, and HTML template rendering for the Vantage dashboard.
+// middleware wiring, and HTML template rendering for the Phish & Discover dashboard.
 //
 // Handlers are split across three files by responsibility:
 //   - route.go: server bootstrap, route registration, and template plumbing
@@ -21,17 +21,17 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"github.com/jordan-wright/unindexed"
-	"github.com/yusufarbc/vantage/auth"
-	"github.com/yusufarbc/vantage/config"
-	ctx "github.com/yusufarbc/vantage/context"
-	"github.com/yusufarbc/vantage/controllers/api"
-	log "github.com/yusufarbc/vantage/logger"
-	mid "github.com/yusufarbc/vantage/middleware"
-	"github.com/yusufarbc/vantage/middleware/ratelimit"
-	"github.com/yusufarbc/vantage/models"
-	"github.com/yusufarbc/vantage/scanner"
-	"github.com/yusufarbc/vantage/util"
-	"github.com/yusufarbc/vantage/worker"
+	"github.com/ytalharabaci/phish-and-discover/auth"
+	"github.com/ytalharabaci/phish-and-discover/config"
+	ctx "github.com/ytalharabaci/phish-and-discover/context"
+	"github.com/ytalharabaci/phish-and-discover/controllers/api"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	mid "github.com/ytalharabaci/phish-and-discover/middleware"
+	"github.com/ytalharabaci/phish-and-discover/middleware/ratelimit"
+	"github.com/ytalharabaci/phish-and-discover/models"
+	"github.com/ytalharabaci/phish-and-discover/scanner"
+	"github.com/ytalharabaci/phish-and-discover/util"
+	"github.com/ytalharabaci/phish-and-discover/worker"
 )
 
 // AdminServerOption is a functional option that is used to configure the
@@ -145,7 +145,7 @@ func (as *AdminServer) registerRoutes() {
 	router.HandleFunc("/impersonate", mid.Use(as.Impersonate, mid.RequirePermission(models.PermissionModifySystem), mid.RequireLogin))
 
 	// ── FINAL SCANNER ROUTER ───────────────────────────────────────────────────────
-	// Vantage security scanning subsystem routes
+	// Discover security scanning subsystem routes
 	router.HandleFunc("/ws/scanner/logs", mid.Use(scanner.ScannerWSHandler, mid.RequireLogin))
 	// Create the API routes
 	api := api.NewServer(
@@ -227,7 +227,7 @@ func newTemplateParams(r *http.Request) templateParams {
 			"dnsx", "katana", "tlsx", "uncover",
 			"asnmap", "interactsh-client", "assetfinder", "cloudlist",
 		},
-		ChiselFingerprint: "SHA256:VantageTacticalSectorAccessKeyFingerprint",
+		ChiselFingerprint: "SHA256:PhishDiscoverTacticalSectorAccessKeyFingerprint",
 		Host:              r.Host,
 	}
 	return params
@@ -241,13 +241,13 @@ func getTemplate(w http.ResponseWriter, tmpl string) *template.Template {
 	if err != nil {
 		log.Error(err)
 	}
-	// Also parse all component templates in vantage subfolder.
+	// Also parse all component templates in discover subfolder.
 	// Use a separate error variable so a glob failure does not
 	// overwrite `err` and cause template.Must to panic when the
 	// primary templates parsed successfully.
-	_, globErr := templates.ParseGlob("templates/vantage/*.html")
+	_, globErr := templates.ParseGlob("templates/discover/*.html")
 	if globErr != nil {
-		log.Warnf("Template parsing warning (vantage/): %v", globErr)
+		log.Warnf("Template parsing warning (discover/): %v", globErr)
 	}
 	return template.Must(templates, err)
 }

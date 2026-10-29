@@ -6,9 +6,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/yusufarbc/vantage/config"
-	ctx "github.com/yusufarbc/vantage/context"
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/config"
+	ctx "github.com/ytalharabaci/phish-and-discover/context"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 var successHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/yusufarbc/vantage/auth"
-	"github.com/yusufarbc/vantage/config"
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/auth"
+	"github.com/ytalharabaci/phish-and-discover/config"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // testContext is the data required to test API related functions

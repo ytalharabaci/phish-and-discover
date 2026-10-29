@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	ctx "github.com/yusufarbc/vantage/context"
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/models"
+	ctx "github.com/ytalharabaci/phish-and-discover/context"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // SendingProfiles handles requests for the /api/smtp/ endpoint

@@ -1,4 +1,4 @@
-module github.com/yusufarbc/vantage
+module github.com/ytalharabaci/phish-and-discover
 
 go 1.25.0
 

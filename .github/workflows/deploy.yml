@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}   # ghcr.io/yusufarbc/vantage
+  IMAGE_NAME: ${{ github.repository }}   # ghcr.io/ytalharabaci/phish-and-discover
 
 jobs:
   build:
@@ -69,7 +69,7 @@ jobs:
           script: |
             set -e
 
-            DEPLOY_DIR="/opt/vantage"
+            DEPLOY_DIR="/opt/phish-and-discover"
             cd "$DEPLOY_DIR"
 
             echo "==> Pulling latest docker-compose.yml/Caddyfile/scripts from git..."
@@ -81,11 +81,11 @@ jobs:
             echo "==> Pulling prebuilt images (no local build — VPS has no SSD)..."
             docker compose pull
 
-            echo "==> Ensuring ./vantage_data is owned by the container's non-root user..."
-            mkdir -p ./vantage_data
-            VANTAGE_UID=$(docker run --rm --entrypoint id "$CORE_IMAGE" -u vantage)
-            VANTAGE_GID=$(docker run --rm --entrypoint id "$CORE_IMAGE" -g vantage)
-            chown -R "$VANTAGE_UID:$VANTAGE_GID" ./vantage_data
+            echo "==> Ensuring ./phish_data is owned by the container's non-root user..."
+            mkdir -p ./phish_data
+            PHISH_UID=$(docker run --rm --entrypoint id "$CORE_IMAGE" -u phish)
+            PHISH_GID=$(docker run --rm --entrypoint id "$CORE_IMAGE" -g phish)
+            chown -R "$PHISH_UID:$PHISH_GID" ./phish_data
 
             echo "==> Restarting stack..."
             docker compose up -d --remove-orphans
@@ -93,11 +93,11 @@ jobs:
             echo "==> Removing dangling images..."
             docker image prune -f
 
-            echo "==> Waiting for vantage-core to be healthy..."
+            echo "==> Waiting for phish-core to be healthy..."
             for i in $(seq 1 30); do
-              STATUS=$(docker inspect -f '{{.State.Health.Status}}' vantage_core 2>/dev/null || echo "pending")
+              STATUS=$(docker inspect -f '{{.State.Health.Status}}' phish_core 2>/dev/null || echo "pending")
               if [ "$STATUS" = "healthy" ]; then
-                echo "==> vantage-core is healthy."
+                echo "==> phish-core is healthy."
                 break
               fi
               echo "    attempt $i/30 — status: $STATUS"
@@ -105,8 +105,8 @@ jobs:
             done
 
             if [ "$STATUS" != "healthy" ]; then
-              echo "ERROR: vantage-core did not become healthy in time."
-              docker compose logs --tail=50 vantage-core
+              echo "ERROR: phish-core did not become healthy in time."
+              docker compose logs --tail=50 phish-core
               exit 1
             fi
 

@@ -13,11 +13,11 @@ import (
 
 	csrf "filippo.io/csrf/gorilla"
 	"github.com/gorilla/sessions"
-	"github.com/yusufarbc/vantage/auth"
-	ctx "github.com/yusufarbc/vantage/context"
-	"github.com/yusufarbc/vantage/controllers/api"
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/auth"
+	ctx "github.com/ytalharabaci/phish-and-discover/context"
+	"github.com/ytalharabaci/phish-and-discover/controllers/api"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // Settings handles the changing of settings

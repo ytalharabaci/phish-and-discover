@@ -7,7 +7,7 @@ import (
 
 	"github.com/gophish/gomail"
 	"github.com/jordan-wright/email"
-	"github.com/yusufarbc/vantage/config"
+	"github.com/ytalharabaci/phish-and-discover/config"
 	check "gopkg.in/check.v1"
 )
 

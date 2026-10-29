@@ -12,8 +12,8 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/webhook"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/webhook"
 )
 
 // Campaign is a struct representing a created campaign

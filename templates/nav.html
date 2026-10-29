@@ -72,18 +72,18 @@
 </style>
 <aside id="sidebar" 
     x-data="{ 
-        expanded: localStorage.getItem('vantage_nav_expanded') 
-            ? JSON.parse(localStorage.getItem('vantage_nav_expanded')) 
+        expanded: localStorage.getItem('phish_nav_expanded') 
+            ? JSON.parse(localStorage.getItem('phish_nav_expanded')) 
             : { recon: true, offensive: true, phishing: true, admin: false }
     }"
-    x-init="$watch('expanded', value => localStorage.setItem('vantage_nav_expanded', JSON.stringify(value)))"
-    class="fixed inset-y-0 left-0 w-72 border-r border-vantage-border flex flex-col z-30 transition-all duration-300 lg:translate-x-0 -translate-x-full shadow-2xl sidebar-glass">
+    x-init="$watch('expanded', value => localStorage.setItem('phish_nav_expanded', JSON.stringify(value)))"
+    class="fixed inset-y-0 left-0 w-72 border-r border-phish-border flex flex-col z-30 transition-all duration-300 lg:translate-x-0 -translate-x-full shadow-2xl sidebar-glass">
     
     <!-- Brand Header -->
-    <div class="h-16 flex items-center px-5 border-b border-vantage-border shrink-0">
+    <div class="h-16 flex items-center px-5 border-b border-phish-border shrink-0">
         <div class="flex flex-col w-full">
-            <span class="nav-brand-text">Vantage</span>
-            <span class="text-[10px] font-mono text-vantage-accent/70 font-bold tracking-[0.15em] uppercase">Security Ops Hub</span>
+            <span class="nav-brand-text">Phish & Discover</span>
+            <span class="text-[10px] font-mono text-phish-accent/70 font-bold tracking-[0.15em] uppercase">Security Ops Hub</span>
         </div>
     </div>
 
@@ -98,7 +98,7 @@
                 </svg>
                 <span>Ops Dashboard</span>
             </div>
-            <div class="w-1.5 h-1.5 rounded-full bg-vantage-accent animate-pulseGlow"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-phish-accent animate-pulseGlow"></div>
         </a>
 
         <!-- ═══ RECONNAISSANCE ═══ -->
@@ -186,7 +186,7 @@
             </button>
             <div x-show="expanded.admin" x-collapse>
                 <a href="/?tab=resilience-admin" data-nav="resilience-admin" class="nav-subitem flex items-center justify-between">
-                    <span>Vantage Agent</span>
+                    <span>Phish & Discover Agent</span>
                     <div class="flex items-center relative">
                         <span id="sidebar-agent-ping" class="absolute inline-flex h-3 w-3 rounded-full bg-emerald-500 opacity-0 animate-ping"></span>
                         <span id="sidebar-agent-dot" class="relative inline-flex rounded-full h-2 w-2 bg-gray-600 transition-all duration-500"></span>
@@ -204,9 +204,9 @@
     </nav>
 
     <!-- Footer -->
-    <div class="px-5 py-3 border-t border-vantage-border shrink-0">
+    <div class="px-5 py-3 border-t border-phish-border shrink-0">
         <div class="flex items-center justify-center">
-            <p class="text-[9px] text-vantage-text-dim/30 font-mono uppercase tracking-wider">Tactical Control Unit</p>
+            <p class="text-[9px] text-phish-text-dim/30 font-mono uppercase tracking-wider">Tactical Control Unit</p>
         </div>
     </div>
 </aside>

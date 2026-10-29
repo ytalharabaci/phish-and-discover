@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	ctx "github.com/yusufarbc/vantage/context"
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/models"
+	ctx "github.com/ytalharabaci/phish-and-discover/context"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // Groups returns a list of groups if requested via GET.

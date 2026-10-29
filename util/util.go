@@ -19,8 +19,8 @@ import (
 	"time"
 
 	"github.com/jordan-wright/email"
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/models"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 var (
@@ -155,7 +155,7 @@ func CheckAndCreateSSL(cp string, kp string) error {
 	template := x509.Certificate{
 		SerialNumber: serialNumber,
 		Subject: pkix.Name{
-			Organization: []string{"Vantage Security Hub"},
+			Organization: []string{"Phish & Discover Security Hub"},
 		},
 		NotBefore: notBefore,
 		NotAfter:  notAfter,

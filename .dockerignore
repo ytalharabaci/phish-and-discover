@@ -42,7 +42,7 @@ logs/
 .env.*.local
 
 # Data
-vantage_data/
+phish_data/
 *.db
 *.sqlite3
 

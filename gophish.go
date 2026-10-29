@@ -1,7 +1,7 @@
 package main
 
 /*
-vantage - Advanced Phishing & Security Operations Hub
+phish-and-discover - Advanced Phishing & Security Operations Hub
 
 The MIT License (MIT)
 
@@ -34,18 +34,18 @@ import (
 
 	"gopkg.in/alecthomas/kingpin.v2"
 
-	"github.com/yusufarbc/vantage/config"
-	"github.com/yusufarbc/vantage/controllers"
-	"github.com/yusufarbc/vantage/dialer"
-	"github.com/yusufarbc/vantage/imap"
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/middleware"
-	"github.com/yusufarbc/vantage/models"
-	"github.com/yusufarbc/vantage/notifier"
-	"github.com/yusufarbc/vantage/pkg/network"
-	"github.com/yusufarbc/vantage/scanner"
-	"github.com/yusufarbc/vantage/webhook"
-	"github.com/yusufarbc/vantage/worker"
+	"github.com/ytalharabaci/phish-and-discover/config"
+	"github.com/ytalharabaci/phish-and-discover/controllers"
+	"github.com/ytalharabaci/phish-and-discover/dialer"
+	"github.com/ytalharabaci/phish-and-discover/imap"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/middleware"
+	"github.com/ytalharabaci/phish-and-discover/models"
+	"github.com/ytalharabaci/phish-and-discover/notifier"
+	"github.com/ytalharabaci/phish-and-discover/pkg/network"
+	"github.com/ytalharabaci/phish-and-discover/scanner"
+	"github.com/ytalharabaci/phish-and-discover/webhook"
+	"github.com/ytalharabaci/phish-and-discover/worker"
 )
 
 const (
@@ -111,7 +111,7 @@ func main() {
 	}
 
 	// Unlock any maillogs that may have been locked for processing
-	// when Vantage was last shutdown.
+	// when Phish & Discover was last shutdown.
 	err = models.UnlockAllMailLogs()
 	if err != nil {
 		log.Fatal(err)
@@ -137,11 +137,11 @@ func main() {
 		go adminServer.Start()
 		go imapMonitor.Start()
 
-		// Start Vantage Background Worker
-		vantageWorker := worker.NewVantageWorker()
-		vantageWorker.Start()
+		// Start Discover Background Worker
+		discoverWorker := worker.NewDiscoverWorker()
+		discoverWorker.Start()
 
-		// Start Chisel Reverse Tunnel Server (Vantage Tactical Network)
+		// Start Chisel Reverse Tunnel Server (Tactical Network)
 		network.GlobalTunnelManager().Configure(conf.ChiselServerPort, "", "")
 		if err := network.GlobalTunnelManager().Start(); err != nil {
 			log.Errorf("Failed to start Chisel Tactical Network: %v", err)

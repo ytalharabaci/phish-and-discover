@@ -1,16 +1,16 @@
 {
-  "name": "vantage",
+  "name": "phish-and-discover",
   "version": "2.0.0-dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yusufarbc/vantage.git"
+    "url": "git+https://github.com/ytalharabaci/phish-and-discover.git"
   },
   "author": "Yusuf Talha Arabacı",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/yusufarbc/vantage/issues"
+    "url": "https://github.com/ytalharabaci/phish-and-discover/issues"
   },
-  "homepage": "https://github.com/yusufarbc/vantage",
+  "homepage": "https://github.com/ytalharabaci/phish-and-discover",
   "devDependencies": {
     "@babel/core": "^7.29.6",
     "@babel/preset-env": "^7.4.5",

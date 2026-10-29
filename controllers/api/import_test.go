@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yusufarbc/vantage/dialer"
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/dialer"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 func makeImportRequest(ctx *testContext, allowedHosts []string, url string) *httptest.ResponseRecorder {

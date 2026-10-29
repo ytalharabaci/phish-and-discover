@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // ── ToolRegistry ──────────────────────────────────────────────────────────────
@@ -159,7 +159,7 @@ func waitUntilIdle(t *testing.T, s *ScanState, timeout time.Duration) {
 
 func TestRunScannerToolPanicDoesNotCrashProcess(t *testing.T) {
 	state := &ScanState{}
-	svc := &VantageScanService{
+	svc := &DiscoverScanService{
 		Executor: &fakeExecutor{panicOnTool: "nuclei"},
 		State:    state,
 	}
@@ -180,7 +180,7 @@ func TestRunScannerToolPanicDoesNotCrashProcess(t *testing.T) {
 func TestRunTaskParallelPanicDoesNotBlockSiblings(t *testing.T) {
 	state := &ScanState{}
 	exec := &fakeExecutor{panicOnTool: "naabu"}
-	svc := &VantageScanService{Executor: exec, State: state}
+	svc := &DiscoverScanService{Executor: exec, State: state}
 
 	tools := []string{"naabu", "httpx", "nuclei"}
 	opts := models.ScanOptions{Parallel: true}
@@ -201,7 +201,7 @@ func TestRunTaskParallelPanicDoesNotBlockSiblings(t *testing.T) {
 func TestRunTaskSequentialRunsAllTools(t *testing.T) {
 	state := &ScanState{}
 	exec := &fakeExecutor{errOnTool: "httpx"}
-	svc := &VantageScanService{Executor: exec, State: state}
+	svc := &DiscoverScanService{Executor: exec, State: state}
 
 	tools := []string{"naabu", "httpx", "nuclei"}
 	if err := svc.RunTask(1, 0, "example.com", "", tools, models.ScanOptions{}); err != nil {
@@ -224,7 +224,7 @@ func TestRunScannerToolLockContention(t *testing.T) {
 	}
 	defer state.ReleaseLock()
 
-	svc := &VantageScanService{Executor: &fakeExecutor{}, State: state}
+	svc := &DiscoverScanService{Executor: &fakeExecutor{}, State: state}
 	err := svc.RunScannerTool(1, 0, "httpx", "example.com", "", models.ScanOptions{})
 	if err == nil {
 		t.Fatalf("expected RunScannerTool to fail synchronously while a scan is already running")

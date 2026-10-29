@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	log "github.com/yusufarbc/vantage/logger"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
 )
 
 // ErrModifyingOnlyAdmin occurs when there is an attempt to modify the only

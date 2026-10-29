@@ -9,8 +9,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/yusufarbc/vantage/models"
-	"github.com/yusufarbc/vantage/notifier"
+	"github.com/ytalharabaci/phish-and-discover/models"
+	"github.com/ytalharabaci/phish-and-discover/notifier"
 )
 
 // DefaultExecutor implements ToolExecutor with hardening and OOM-safe streaming.
@@ -230,7 +230,7 @@ func (e *DefaultExecutor) Collect(ctx context.Context, userID int64, parseAs, ta
 type GormPersister struct{}
 
 // PersistFinding parses a raw JSONL line from any PD tool and writes it to the
-// vantage_findings table. Enriches the Finding with severity, template ID, and name
+// findings table. Enriches the Finding with severity, template ID, and name
 // extracted from the nested JSON structure specific to each tool.
 func (p *GormPersister) PersistFinding(userID int64, toolName, scanTarget, ifaceName, line string) error {
 	var obj map[string]interface{}
@@ -290,7 +290,7 @@ func (p *GormPersister) PersistFinding(userID int64, toolName, scanTarget, iface
 		notifier.SendAlert(toolName, severity, name, target)
 	}
 
-	// If this is a discovery tool, also upsert the target into vantage_targets
+	// If this is a discovery tool, also upsert the target into discover_targets
 	switch strings.ToLower(toolName) {
 	case "subfinder", "dnsx", "naabu", "uncover":
 		_ = models.UpsertDiscoveredTarget(userID, target, toolName)
@@ -299,7 +299,7 @@ func (p *GormPersister) PersistFinding(userID int64, toolName, scanTarget, iface
 	return err
 }
 
-// PersistDiscoveredTarget stores a newly found asset into vantage_targets.
+// PersistDiscoveredTarget stores a newly found asset into discover_targets.
 func (p *GormPersister) PersistDiscoveredTarget(userID int64, target, source string) error {
 	return models.UpsertDiscoveredTarget(userID, target, source)
 }

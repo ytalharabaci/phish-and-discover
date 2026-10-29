@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yusufarbc/vantage/config"
+	"github.com/ytalharabaci/phish-and-discover/config"
 
 	"github.com/gophish/gomail"
 	"github.com/jordan-wright/email"

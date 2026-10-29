@@ -4,7 +4,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/yusufarbc/vantage/models"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // ── Tool Interface ────────────────────────────────────────────────────────────

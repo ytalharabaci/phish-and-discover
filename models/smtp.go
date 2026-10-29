@@ -12,9 +12,9 @@ import (
 
 	"github.com/gophish/gomail"
 	"github.com/jinzhu/gorm"
-	"github.com/yusufarbc/vantage/dialer"
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/mailer"
+	"github.com/ytalharabaci/phish-and-discover/dialer"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/mailer"
 )
 
 // Dialer is a wrapper around a standard gomail.Dialer in order

@@ -1,6 +1,6 @@
-# Vantage Architecture
+# PHISH & DISCOVER Architecture
 
-This document describes the current implementation of Vantage's scanner subsystem — the part
+This document describes the current implementation of PHISH & DISCOVER's scanner subsystem — the part
 of the codebase that goes beyond stock Gophish. For Gophish's own architecture (campaigns,
 templates, results), see the [Gophish documentation](https://docs.getgophish.com/).
 
@@ -8,11 +8,11 @@ templates, results), see the [Gophish documentation](https://docs.getgophish.com
 
 - **Backend**: Go, built on top of Gophish's HTTP server, middleware, and GORM models.
 - **Scanner engine**: `scanner/` package — wraps ProjectDiscovery CLI tools via `os/exec`.
-- **Frontend**: Server-rendered `html/template` (`templates/vantage_dashboard.html`) with
+- **Frontend**: Server-rendered `html/template` (`templates/discover_dashboard.html`) with
   Tailwind CSS and vanilla JS; CSRF-protected via Gophish's existing `gorilla/csrf` middleware.
 - **Database**: SQLite (same database file as Gophish; `Scan`/`Finding` tables added via
   GORM `AutoMigrate`, foreign keys to Gophish's existing tables where relevant).
-- **Deployment**: Docker Compose — `vantage-core` (app + PD tools), `postfix` (SMTP relay),
+- **Deployment**: Docker Compose — `phish-core` (app + PD tools), `postfix` (SMTP relay),
   `caddy` (TLS termination, reverse proxy, admin path obfuscation).
 
 ## Scanner package design
@@ -25,7 +25,7 @@ templates, results), see the [Gophish documentation](https://docs.getgophish.com
 - **`ToolRegistry`** — thread-safe lookup of `Tool` by name. `DefaultRegistry` registers all
   shipped tools at package init.
 - **`ScanService`** — orchestration entry points (`RunScannerTool`, `RunDiscovery`, `RunTask`).
-  `VantageScanService` is the concrete implementation (`engine.go`); callers depend on the
+  `PHISH & DISCOVERScanService` is the concrete implementation (`engine.go`); callers depend on the
   interface, not the struct (Dependency Inversion).
 - **`ToolExecutor`** — low-level process execution + result collection, separate from
   orchestration logic.
@@ -54,7 +54,7 @@ instead of buffering it all in memory, to avoid OOM on large nuclei/httpx runs.
 
 | Concern | Path |
 |---|---|
-| Scan/Finding DB models | `models/vantage.go` |
+| Scan/Finding DB models | `models/discover.go` |
 | Scanner orchestration | `scanner/engine.go` |
 | Tool adapters | `scanner/tools.go` |
 | Tool/Service interfaces | `scanner/scanner_interface.go` |
@@ -63,5 +63,5 @@ instead of buffering it all in memory, to avoid OOM on large nuclei/httpx runs.
 | Structured logging / agent health | `scanner/error_handler.go` |
 | REST API handlers | `controllers/api/scanner.go`, `controllers/api/network.go` |
 | WebSocket log hub | `scanner/engine.go` (`ScannerLogHub`), mounted in `controllers/route.go` |
-| Dashboard template | `templates/vantage_dashboard.html` |
+| Dashboard template | `templates/discover_dashboard.html` |
 | Deployment | `Dockerfile`, `docker-compose.yml`, `Caddyfile` |

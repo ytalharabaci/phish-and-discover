@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/mailer"
-	"github.com/yusufarbc/vantage/models"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/mailer"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // Worker is an interface that defines the operations needed for a background worker

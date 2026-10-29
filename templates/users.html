@@ -3,12 +3,12 @@
     <!-- Header Area -->
     <div class="flex items-center justify-between mb-8">
         <div>
-            <h1 class="text-3xl font-black tracking-tighter text-vantage-text uppercase italic">
+            <h1 class="text-3xl font-black tracking-tighter text-phish-text uppercase italic">
                 {{.Title}}
             </h1>
-            <p class="text-base text-vantage-text-dim mt-2 tracking-wide uppercase font-black opacity-60">Manage operational access and tactical personnel</p>
+            <p class="text-base text-phish-text-dim mt-2 tracking-wide uppercase font-black opacity-60">Manage operational access and tactical personnel</p>
         </div>
-        <button type="button" class="bg-vantage-accent hover:bg-vantage-accent/90 text-slate-900 font-black px-8 py-3.5 rounded-xl text-base transition-all active:scale-95 shadow-xl shadow-vantage-accent/20 flex items-center gap-3 uppercase tracking-widest" id="new_button" data-toggle="modal" data-backdrop="static"
+        <button type="button" class="bg-phish-accent hover:bg-phish-accent/90 text-slate-900 font-black px-8 py-3.5 rounded-xl text-base transition-all active:scale-95 shadow-xl shadow-phish-accent/20 flex items-center gap-3 uppercase tracking-widest" id="new_button" data-toggle="modal" data-backdrop="static"
             data-user-id="-1" data-target="#modal">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             New User
@@ -20,23 +20,23 @@
     </div>
 
     <!-- Main Content Card -->
-    <div class="glass-card rounded-2xl border border-vantage-border overflow-hidden shadow-2xl">
-        <div class="p-8 border-b border-vantage-border bg-vantage-sidebar/30">
+    <div class="glass-card rounded-2xl border border-phish-border overflow-hidden shadow-2xl">
+        <div class="p-8 border-b border-phish-border bg-phish-sidebar/30">
             <div id="loading" class="flex justify-center p-12">
-                <i class="fa fa-spinner fa-spin fa-3x text-vantage-accent opacity-50"></i>
+                <i class="fa fa-spinner fa-spin fa-3x text-phish-accent opacity-50"></i>
             </div>
             
             <div class="overflow-x-auto">
                 <table id="userTable" class="w-full text-left text-lg" style="display:none;">
                     <thead>
-                        <tr class="bg-vantage-sidebar/50 text-vantage-text-dim font-black uppercase tracking-widest text-sm border-b border-vantage-border">
+                        <tr class="bg-phish-sidebar/50 text-phish-text-dim font-black uppercase tracking-widest text-sm border-b border-phish-border">
                             <th class="px-8 py-5">Username</th>
                             <th class="px-8 py-5">Role</th>
                             <th class="px-8 py-5">Last Activity</th>
                             <th class="px-8 py-5 text-right no-sort">Operational Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-vantage-border">
+                    <tbody class="divide-y divide-phish-border">
                     </tbody>
                 </table>
             </div>
@@ -46,31 +46,31 @@
 <!-- Modal Modernization -->
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content glass-card rounded-2xl border border-vantage-border shadow-2xl p-0 overflow-hidden bg-vantage-panel">
-            <div class="modal-header border-b border-vantage-border/30 p-8 flex items-center justify-between bg-vantage-sidebar/30">
+        <div class="modal-content glass-card rounded-2xl border border-phish-border shadow-2xl p-0 overflow-hidden bg-phish-panel">
+            <div class="modal-header border-b border-phish-border/30 p-8 flex items-center justify-between bg-phish-sidebar/30">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-vantage-accent/10 border border-vantage-accent/20 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-vantage-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    <div class="w-12 h-12 rounded-xl bg-phish-accent/10 border border-phish-accent/20 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-phish-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     </div>
                     <div>
-                        <h4 class="text-2xl font-black text-vantage-text tracking-tighter italic uppercase" id="userModalLabel">Personnel Entry</h4>
-                        <p class="text-sm text-vantage-text-dim mt-1 font-black uppercase tracking-widest opacity-60">Provision tactical sector credentials</p>
+                        <h4 class="text-2xl font-black text-phish-text tracking-tighter italic uppercase" id="userModalLabel">Personnel Entry</h4>
+                        <p class="text-sm text-phish-text-dim mt-1 font-black uppercase tracking-widest opacity-60">Provision tactical sector credentials</p>
                     </div>
                 </div>
-                <button type="button" class="text-vantage-text-dim hover:text-vantage-text transition-colors text-3xl p-2" data-dismiss="modal" aria-label="Close">&times;</button>
+                <button type="button" class="text-phish-text-dim hover:text-phish-text transition-colors text-3xl p-2" data-dismiss="modal" aria-label="Close">&times;</button>
             </div>
             <div class="modal-body p-8 space-y-8" id="modal_body">
                 <div id="modal.flashes"></div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="space-y-3">
-                        <label class="block text-sm font-black text-vantage-text-dim uppercase tracking-widest" for="username">Strategic ID</label>
-                        <input type="text" class="w-full bg-vantage-bg/50 border border-vantage-border rounded-xl px-6 py-4 text-base focus:border-vantage-accent outline-none transition-all placeholder:text-vantage-text-dim/20" placeholder="Username" id="username" autofocus />
+                        <label class="block text-sm font-black text-phish-text-dim uppercase tracking-widest" for="username">Strategic ID</label>
+                        <input type="text" class="w-full bg-phish-bg/50 border border-phish-border rounded-xl px-6 py-4 text-base focus:border-phish-accent outline-none transition-all placeholder:text-phish-text-dim/20" placeholder="Username" id="username" autofocus />
                     </div>
                     
                     <div class="space-y-3">
-                        <label class="block text-sm font-black text-vantage-text-dim uppercase tracking-widest" for="role">Operational Authorization</label>
-                        <select class="w-full bg-vantage-bg/50 border border-vantage-border rounded-xl px-6 py-4 text-base focus:border-vantage-accent outline-none transition-all cursor-pointer" id="role">
+                        <label class="block text-sm font-black text-phish-text-dim uppercase tracking-widest" for="role">Operational Authorization</label>
+                        <select class="w-full bg-phish-bg/50 border border-phish-border rounded-xl px-6 py-4 text-base focus:border-phish-accent outline-none transition-all cursor-pointer" id="role">
                             <option value="admin">Administrator / Overseer</option>
                             <option value="user">Tactical Operator</option>
                         </select>
@@ -79,10 +79,10 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="space-y-4">
-                        <label class="block text-sm font-black text-vantage-text-dim uppercase tracking-widest" for="password">Security Key</label>
-                        <input type="password" class="w-full bg-vantage-bg/50 border border-vantage-border rounded-xl px-6 py-4 text-base focus:border-vantage-accent outline-none transition-all placeholder:text-vantage-text-dim/20" autocomplete="new-password" placeholder="Password" id="password" required />
+                        <label class="block text-sm font-black text-phish-text-dim uppercase tracking-widest" for="password">Security Key</label>
+                        <input type="password" class="w-full bg-phish-bg/50 border border-phish-border rounded-xl px-6 py-4 text-base focus:border-phish-accent outline-none transition-all placeholder:text-phish-text-dim/20" autocomplete="new-password" placeholder="Password" id="password" required />
                         <div class="hidden" id="password-strength-container">
-                            <div class="h-2 bg-vantage-border rounded-full overflow-hidden" id="password-strength">
+                            <div class="h-2 bg-phish-border rounded-full overflow-hidden" id="password-strength">
                                 <div id="password-strength-bar" class="h-full transition-all duration-500" role="progressbar"></div>
                             </div>
                             <span id="password-strength-description" class="text-xs font-black uppercase tracking-widest mt-2 block"></span>
@@ -90,25 +90,25 @@
                     </div>
                     
                     <div class="space-y-4">
-                        <label class="block text-sm font-black text-vantage-text-dim uppercase tracking-widest" for="confirm_password">Validation Key</label>
-                        <input type="password" class="w-full bg-vantage-bg/50 border border-vantage-border rounded-xl px-6 py-4 text-base focus:border-vantage-accent outline-none transition-all placeholder:text-vantage-text-dim/20" placeholder="Confirm Password" id="confirm_password" required />
+                        <label class="block text-sm font-black text-phish-text-dim uppercase tracking-widest" for="confirm_password">Validation Key</label>
+                        <input type="password" class="w-full bg-phish-bg/50 border border-phish-border rounded-xl px-6 py-4 text-base focus:border-phish-accent outline-none transition-all placeholder:text-phish-text-dim/20" placeholder="Confirm Password" id="confirm_password" required />
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-4 bg-vantage-bg/30 p-6 rounded-2xl border border-vantage-border shadow-inner">
-                    <label class="flex items-center gap-4 text-base text-vantage-text-dim cursor-pointer hover:text-vantage-text transition-colors group">
-                        <input id="force_password_change_checkbox" type="checkbox" checked class="w-6 h-6 rounded border-vantage-border bg-vantage-bg text-vantage-accent focus:ring-vantage-accent/30 transition-all">
+                <div class="flex flex-col gap-4 bg-phish-bg/30 p-6 rounded-2xl border border-phish-border shadow-inner">
+                    <label class="flex items-center gap-4 text-base text-phish-text-dim cursor-pointer hover:text-phish-text transition-colors group">
+                        <input id="force_password_change_checkbox" type="checkbox" checked class="w-6 h-6 rounded border-phish-border bg-phish-bg text-phish-accent focus:ring-phish-accent/30 transition-all">
                         <span class="font-bold tracking-tight">Require mandatory security key rotation on ingress</span>
                     </label>
-                    <label class="flex items-center gap-4 text-base text-vantage-text-dim cursor-pointer hover:text-vantage-text transition-colors group">
-                        <input id="account_locked_checkbox" type="checkbox" class="w-6 h-6 rounded border-vantage-border bg-vantage-bg text-vantage-accent focus:ring-vantage-accent/30 transition-all">
+                    <label class="flex items-center gap-4 text-base text-phish-text-dim cursor-pointer hover:text-phish-text transition-colors group">
+                        <input id="account_locked_checkbox" type="checkbox" class="w-6 h-6 rounded border-phish-border bg-phish-bg text-phish-accent focus:ring-phish-accent/30 transition-all">
                         <span class="font-bold tracking-tight">Lock operational sector authorization</span>
                     </label>
                 </div>
             </div>
-            <div class="modal-footer p-8 border-t border-vantage-border/30 flex items-center justify-between bg-vantage-sidebar/30">
-                <button type="button" class="px-8 py-3 text-base font-black text-vantage-text-dim hover:text-vantage-text transition-all tracking-widest uppercase" data-dismiss="modal">Abort</button>
-                <button type="button" class="bg-vantage-accent hover:bg-vantage-accent/90 text-slate-900 font-black px-10 py-3.5 rounded-xl text-base transition-all active:scale-95 shadow-xl shadow-vantage-accent/20 uppercase tracking-widest" id="modalSubmit">Commence Ops</button>
+            <div class="modal-footer p-8 border-t border-phish-border/30 flex items-center justify-between bg-phish-sidebar/30">
+                <button type="button" class="px-8 py-3 text-base font-black text-phish-text-dim hover:text-phish-text transition-all tracking-widest uppercase" data-dismiss="modal">Abort</button>
+                <button type="button" class="bg-phish-accent hover:bg-phish-accent/90 text-slate-900 font-black px-10 py-3.5 rounded-xl text-base transition-all active:scale-95 shadow-xl shadow-phish-accent/20 uppercase tracking-widest" id="modalSubmit">Commence Ops</button>
             </div>
         </div>
     </div>

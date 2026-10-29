@@ -14,12 +14,12 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jordan-wright/unindexed"
-	"github.com/yusufarbc/vantage/config"
-	ctx "github.com/yusufarbc/vantage/context"
-	"github.com/yusufarbc/vantage/controllers/api"
-	log "github.com/yusufarbc/vantage/logger"
-	"github.com/yusufarbc/vantage/models"
-	"github.com/yusufarbc/vantage/util"
+	"github.com/ytalharabaci/phish-and-discover/config"
+	ctx "github.com/ytalharabaci/phish-and-discover/context"
+	"github.com/ytalharabaci/phish-and-discover/controllers/api"
+	log "github.com/ytalharabaci/phish-and-discover/logger"
+	"github.com/ytalharabaci/phish-and-discover/models"
+	"github.com/ytalharabaci/phish-and-discover/util"
 )
 
 // ErrInvalidRequest is thrown when a request with an invalid structure is

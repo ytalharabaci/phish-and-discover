@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	csrf "filippo.io/csrf/gorilla"
-	ctx "github.com/yusufarbc/vantage/context"
-	"github.com/yusufarbc/vantage/models"
+	ctx "github.com/ytalharabaci/phish-and-discover/context"
+	"github.com/ytalharabaci/phish-and-discover/models"
 )
 
 // CSRFExemptPrefixes are a list of routes that are exempt from CSRF protection

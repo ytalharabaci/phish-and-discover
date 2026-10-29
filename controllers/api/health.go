@@ -5,8 +5,8 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/yusufarbc/vantage/models"
-	"github.com/yusufarbc/vantage/pkg/network"
+	"github.com/ytalharabaci/phish-and-discover/models"
+	"github.com/ytalharabaci/phish-and-discover/pkg/network"
 )
 
 // HealthStatus represents the structured JSON response for /api/health.
